@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>selling_product</title>
+    <style>
+      /* 전체 */
+      @import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR&family=Nanum+Gothic+Coding&display=swap");
+      body {
+        font-family: "IBM Plex Sans KR", sans-serif;
+        font-size: 18px;
+      }
+
+      /* 상품 이미지 섹션 */
+      .productImage {
+        margin: 70px auto 30px auto;
+        display: block;
+        text-align: center;
+      }
+
+      /* 제품 제목 및 정보 섹션 */
+      .productTextBox {
+        margin: auto;
+        width: 650px;
+      }
+      .productTitle {
+        font-size: 28px;
+        font-family: "Black Han Sans", sans-serif;
+      }
+      .priceColor {
+        color: tomato;
+      }
+      .productExplain {
+        margin-top: 20px;
+      }
+      .styleWidth {
+        width: 10px;
+      }
+      .colorWidth {
+        margin-right: 15px;
+      }
+
+      /* 주문하기 섹션 */
+      .orderSection {
+        margin: 50px auto 50px auto;
+        width: 650px;
+        font-family: "IBM Plex Sans KR", sans-serif;
+      }
+      .orderTitle {
+        font-family: "Nanum Gothic Coding", monospace;
+        font-weight: bold;
+        font-size: 22px;
+      }
+      .quantitySpan {
+        margin-right: 52px;
+      }
+      .sizeTitle {
+        margin-right: 36px;
+      }
+      .adressSpan {
+        margin-right: 52px;
+      }
+      .telSpan {
+        margin-right: 20px;
+      }
+
+      /* 주문버튼 섹션 */
+      .orderBtn {
+        width: 100px;
+        margin: 0 auto 100px auto;
+      }
+      .btnBackColor {
+        background-color: tan;
+        border-style: unset;
+        font-family: "Nanum Gothic Coding", monospace;
+        font-size: 20px;
+        padding: 10px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div pageBox>
+      <div class="productImage">
+        <img
+          src="https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_900,h_900/global/382560/01/sv01/fnd/KOR/fmt/png/%EC%8A%A4%EC%9B%A8%EC%9D%B4%EB%93%9C-%ED%8A%B8%EB%A6%AC%ED%94%8C%EC%97%91%EC%8A%A4-%ED%95%98%EB%A6%AC%EB%B3%B4/Suede-Triplex-Haribo"
+          alt="haribo_shoes"
+          width="600px;"
+        />
+      </div>
+      <div class="productTextBox">
+        <div class="productValue">
+          <span class="productTitle"
+            >스웨이드 트리플엑스 하리보/Suede Triplex Haribo</span
+          >
+          <span
+            ><br />가격: <del>129,000</del
+            ><em class="priceColor">90,300 원</em></span
+          >
+        </div>
+        <div class="productExplain">
+          Suede의 상징적인 실루엣에 독특한 Haribo 에디션을 더해 재미를 더한
+          스웨이드 트리플엑스 하리보.
+          <div class="style&color">
+            <div class="stlyeExplainBox">
+              <span class="styleWidth"> 스타일:</span> 382560_01
+            </div>
+            <div class="colorExplainBox">
+              <span class="colorWidth"> 색상:</span> Mimosa-Whisper White
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="orderSection">
+        <div class="orderTitle">주문하기</div>
+        <div class="userTextBox">
+          <div class="userName">
+            <span class="userNameSpan">주문자 성함: </span><input type="text" />
+          </div>
+          <div class="productQuantity">
+            <span class="quantitySpan">수량: </span>
+            <input type="number" min="1" max="10" />
+          </div>
+          <div class="shoesSize">
+            <span class="sizeTitle">사이즈:</span>
+            <select name="selectSize" class="selectSizeBox">
+              <option value="">사이즈 선택</option>
+              <option value="250mm">250mm</option>
+              <option value="260mm">260mm</option>
+              <option value="270mm">270mm</option>
+              <option value="280mm">280mm</option>
+            </select>
+          </div>
+          <div class="adress">
+            <span class="adressSpan">주소: </span
+            ><input class="adressBox" type="adress" />
+          </div>
+          <div class="telNumber">
+            <span class="telSpan">전화번호: </span
+            ><input class="telBox" type="tel" />
+          </div>
+        </div>
+      </div>
+
+      <div class="orderBtn">
+        <button class="btnBackColor" onclick="alert('주문이 완료되었습니다!')">
+          주문하기
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

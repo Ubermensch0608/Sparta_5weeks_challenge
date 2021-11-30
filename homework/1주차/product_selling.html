@@ -4,13 +4,29 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- import from jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>selling_product</title>
     <style>
       /* 전체 */
       @import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR&family=Nanum+Gothic+Coding&display=swap");
+
       body {
         font-family: "IBM Plex Sans KR", sans-serif;
         font-size: 18px;
+      }
+
+      /* 환율 계산기 네비게이션 */
+      #exchangeCalc {
+        background-color: ivory;
+        width: 200px;
+        margin: margin;
+        text-align: center;
+        border: black solid 2px;
+        border-radius: 4px;
+        display: block;
+        font-size: 12pt;
+        font-family: "Nanum Gothic Coding", monospace;
       }
 
       /* 상품 이미지 섹션 */
@@ -25,19 +41,24 @@
         margin: auto;
         width: 650px;
       }
+
       .productTitle {
         font-size: 28px;
         font-family: "Black Han Sans", sans-serif;
       }
+
       .priceColor {
         color: tomato;
       }
+
       .productExplain {
         margin-top: 20px;
       }
+
       .styleWidth {
         width: 10px;
       }
+
       .colorWidth {
         margin-right: 15px;
       }
@@ -48,20 +69,25 @@
         width: 650px;
         font-family: "IBM Plex Sans KR", sans-serif;
       }
+
       .orderTitle {
         font-family: "Nanum Gothic Coding", monospace;
         font-weight: bold;
         font-size: 22px;
       }
+
       .quantitySpan {
         margin-right: 52px;
       }
+
       .sizeTitle {
         margin-right: 36px;
       }
+
       .adressSpan {
         margin-right: 52px;
       }
+
       .telSpan {
         margin-right: 20px;
       }
@@ -71,6 +97,7 @@
         width: 100px;
         margin: 0 auto 100px auto;
       }
+
       .btnBackColor {
         background-color: tan;
         border-style: unset;
@@ -80,9 +107,30 @@
         font-weight: bold;
       }
     </style>
+    <script>
+      function q1() {
+        $.ajax({
+          type: "GET",
+          url: "http://spartacodingclub.shop/sparta_api/rate",
+          data: {},
+          success: function (response) {
+            let date = response["date"];
+            let rate = response["rate"];
+            let rateAndRate = `<div>${date}</div><div>1$ = ${rate}원</div> `;
+            console.log(rateAndRate);
+            $("#exchangeCalc").append(rateAndRate);
+          },
+        });
+      }
+      $(document).ready(q1());
+    </script>
   </head>
 
   <body>
+    <div id="exchangeCalc">
+      환율계산기
+      <hr color="silver" />
+    </div>
     <div pageBox>
       <div class="productImage">
         <img

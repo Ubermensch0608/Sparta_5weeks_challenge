@@ -1,211 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <!-- Required meta tags -->
-    <meta charset="utf-8" />
+
+    <meta charset="utf-8"/>
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
     <!-- Bootstrap CSS -->
     <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
     />
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"
     ></script>
     <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"
     ></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>스파르타코딩클럽 | 부트스트랩 연습하기</title>
 
     <style>
-      .wrap {
-        width: 900px;
-        margin: auto;
-      }
+        .wrap {
+            width: 900px;
+            margin: auto;
+        }
 
-      .comment {
-        color: blue;
-        font-weight: bold;
-        font-size: 14px;
-      }
+        .comment {
+            color: blue;
+            font-weight: bold;
+            font-size: 14px;
+        }
 
-      .card-title {
-        color: cornflowerblue;
-        font-size: 13px;
-      }
+        .card-title {
+            color: cornflowerblue;
+            font-size: 13px;
+        }
 
-      .card-text {
-        font-size: 14px;
-      }
-      .form {
-        width: 600px;
-        border: 2px solid black;
-        border-radius: 6px;
-        margin: 0px auto 30px auto;
-        display: block;
-        padding: 30px;
-        font-weight: bold;
-      }
-      #saveArticleBtn {
-        margin-top: 20px;
-      }
+        .card-text {
+            font-size: 14px;
+        }
+
+        #post-box {
+            width: 600px;
+            border: 2px solid black;
+            border-radius: 6px;
+            margin: 0px auto 30px auto;
+            display: block;
+            padding: 30px;
+            font-weight: bold;
+            display: none;
+        }
+
+        #saveArticleBtn {
+            margin-top: 20px;
+        }
     </style>
     <script>
-      function hey() {
-        alert("안녕!!");
-      }
+        function openClose() {
+            let status = $('#post-box').css('display');
+            if (status == 'block') {
+                $('#post-box').hide()
+                $('#btn-posting-box').text('포스팅박스 열기')
+            } else {
+                $('#post-box').show()
+                $('#btn-posting-box').text('포스팅박스 닫기')
+            }
+         }
     </script>
-  </head>
+</head>
 
-  <body>
-    <div class="wrap">
-      <div class="jumbotron">
+<body>
+<div class="wrap">
+    <div class="jumbotron">
         <h1 class="display-4">나홀로 링크 메모장!</h1>
         <p class="lead">
-          중요한 링크를 저장해두고, 나중에 볼 수 있는 공간입니다
+            중요한 링크를 저장해두고, 나중에 볼 수 있는 공간입니다
         </p>
-        <hr class="my-4" />
+        <hr class="my-4"/>
 
         <p class="lead">
-          <a
-            class="btn btn-primary btn-lg"
-            href="#"
-            role="button"
-            onclick="hey()"
+            <a
+                    id="btn-posting-box"
+                    class="btn btn-primary btn-lg"
+                    href="#"
+                    role="button"
+                    onclick="openClose()"
             >포스팅박스 열기</a
-          >
+            >
         </p>
-      </div>
+    </div>
 
-      <div class="form">
+    <div class="posting-box" id="post-box">
         <div class="form-group">
-          <label for="exampleInputEmail1">아티클 URL</label>
-          <input
-            type="text"
-            class="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-          />
+            <label>아티클 URL</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="article-url"
+                    aria-describedby="emailHelp"
+            />
         </div>
-        <div class="short-commnet">
-          <label for="exampleFormControlTextarea1">간단 코멘트</label>
-          <textarea
-            class="form-control"
-            id="exampleFormControlTextarea1"
-            rows="3"
-          ></textarea>
+        <div class="short-comment">
+            <label for="exampleFormControlTextarea1">간단 코멘트</label>
+            <textarea
+                    class="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="3"
+            ></textarea>
         </div>
         <button type="submit" id="saveArticleBtn" class="btn btn-primary">
-          기사저장
+            기사저장
         </button>
-      </div>
-      <div class="card-columns">
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
-            <p class="card-text">
-              기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
-              하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
-            </p>
-            <p class="comment">여기에 코멘트가 들어갑니다.</p>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
-            <p class="card-text">
-              기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
-              하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
-            </p>
-            <p class="comment">여기에 코멘트가 들어갑니다.</p>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
-            <p class="card-text">
-              기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
-              하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
-            </p>
-            <p class="comment">여기에 코멘트가 들어갑니다.</p>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
-            <p class="card-text">
-              기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
-              하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
-            </p>
-            <p class="comment">여기에 코멘트가 들어갑니다.</p>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
-            <p class="card-text">
-              기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
-              하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
-            </p>
-            <p class="comment">여기에 코멘트가 들어갑니다.</p>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
-            <p class="card-text">
-              기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
-              하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
-            </p>
-            <p class="comment">여기에 코멘트가 들어갑니다.</p>
-          </div>
-        </div>
-      </div>
     </div>
-  </body>
+    <div class="card-columns" id="cards-box">
+        <div class="card">
+            <img
+                    class="card-img-top"
+                    src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
+                    alt="Card image cap"
+            />
+            <div class="card-body">
+                <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
+                <p class="card-text">
+                    기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
+                    하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
+                </p>
+                <p class="comment">여기에 코멘트가 들어갑니다.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img
+                    class="card-img-top"
+                    src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
+                    alt="Card image cap"
+            />
+            <div class="card-body">
+                <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
+                <p class="card-text">
+                    기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
+                    하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
+                </p>
+                <p class="comment">여기에 코멘트가 들어갑니다.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img
+                    class="card-img-top"
+                    src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
+                    alt="Card image cap"
+            />
+            <div class="card-body">
+                <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
+                <p class="card-text">
+                    기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
+                    하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
+                </p>
+                <p class="comment">여기에 코멘트가 들어갑니다.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img
+                    class="card-img-top"
+                    src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
+                    alt="Card image cap"
+            />
+            <div class="card-body">
+                <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
+                <p class="card-text">
+                    기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
+                    하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
+                </p>
+                <p class="comment">여기에 코멘트가 들어갑니다.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img
+                    class="card-img-top"
+                    src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
+                    alt="Card image cap"
+            />
+            <div class="card-body">
+                <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
+                <p class="card-text">
+                    기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
+                    하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
+                </p>
+                <p class="comment">여기에 코멘트가 들어갑니다.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img
+                    class="card-img-top"
+                    src="https://image.theminda.com/data/tg/image/tour/middle/201905/c8aee858ed6e8c34010fe3c4ae9be8a5.jpg"
+                    alt="Card image cap"
+            />
+            <div class="card-body">
+                <h5 class="card-title">여기 기사 제목이 들어가죠</h5>
+                <p class="card-text">
+                    기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록
+                    하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...
+                </p>
+                <p class="comment">여기에 코멘트가 들어갑니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 </html>

@@ -1,0 +1,26 @@
+input.search-input {
+  width: 500px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 8px;
+}
+.recommend-card-table {
+  border: 2px solid black;
+  border-radius: 10px;
+  height: 400px;
+}
+.recommend-card-table img {
+  width: 300px;
+}
+.keyword-input-section td {
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+.keyword-search-button {
+  background-color: green;
+  border: none;
+  border-radius: 20px;
+  width: 400px;
+  height: 30px;
+  color: white;
+}

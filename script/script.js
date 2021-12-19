@@ -1,5 +1,6 @@
 $(".select-search-btn").click(function () {
   $(".result").show();
+  $(".section-array").show();
 });
 // 키워드 버튼 함수
 $("#number .select-btn").click(function () {
@@ -11,7 +12,6 @@ $("#situation .select-btn").click(function () {
   $(this).toggleClass("btn-clicked");
 });
 $("#genre .select-btn").click(function () {
-  $("#genre .select-btn").not(this).removeClass("btn-clicked");
   $(this).toggleClass("btn-clicked");
 });
 

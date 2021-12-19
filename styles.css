@@ -141,15 +141,15 @@ h1 {
 }
 .btn-clicked {
   background-color: var(--main-green-color);
-  color: #fff !important;
   border: 1px solid var(--main-green-color);
+  color: #fff !important;
 }
 /* 결과 페이지 */
 
 .result {
-  padding-top: 100px;
   display: none;
   border: 1px solid #fff;
+  text-align: center;
 }
 .result h4 {
   margin: 20px 0;
@@ -158,12 +158,39 @@ h1 {
   color: var(--main-green-color);
 }
 .result .cards {
-  margin: 100px auto;
+  margin: 60px auto 0px auto;
+}
+
+/* 정렬 기능 섹션 */
+.section-array {
+  display: none;
+  text-align: center;
+}
+.array-button-holder {
+  width: 950px;
+  background-color: var(--main-green-color);
+  border: 1px solid none;
+  border-radius: 10px !important;
+  margin-bottom: 20px;
+  padding: 8px;
+  text-align: left;
+  display: inline-block;
+}
+.section-array button {
+  border: none;
+  border-radius: 15px;
+  padding: 3px;
+}
+
+/* 검색 결과 카드 섹션 */
+.cards {
+  text-align: center;
 }
 #cardHolder {
   width: 1000px;
+  display: inline-flex;
+  margin-bottom: 100px;
 }
-
 /* 소개 페이지 */
 #section-4 {
   background-color: var(--main-green-color);

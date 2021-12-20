@@ -13,6 +13,8 @@
 }
 * {
   font-family: "GmarketSansMedium";
+  margin: 0;
+  padding: 0;
 }
 body {
   overflow: scroll;
@@ -40,7 +42,7 @@ h1 {
   text-align: left;
 }
 
-/* 메인 페이지 */
+/* 텍스트 검색 인풋 박스 */
 .logo {
   margin: 60px;
 }
@@ -69,13 +71,28 @@ h1 {
   background: url(./images/pngegg.png) no-repeat scroll 7px;
   background-size: 30px;
 }
-/* .search-btn {
-  position: absolute;
-  top: 15px;
-  left: 30px;
-} */
+
+button.text-search-btn {
+  background-color: seashell;
+  border: 1px solid black;
+  border-radius: 25px;
+  width: 80px;
+  height: 40px;
+  padding-top: 5px;
+}
+
+/* 텍스트 검색 결과 섹션*/
+.text-result-section {
+  margin-top: 40px;
+  display: none;
+}
+.text-result-section h1 {
+  margin-bottom: 30px;
+}
+
+/* 추천 게임 섹션 */
 .recommend-box {
-  margin-top: 60px;
+  margin-top: 40px;
   text-align: left;
 }
 .recommend-box h1 {
@@ -105,7 +122,7 @@ h1 {
   font-size: 12px;
 }
 
-/* 검색페이지 */
+/* 키워드 검색페이지 */
 
 .btn-section {
   width: 90%;
@@ -144,7 +161,7 @@ h1 {
   border: 1px solid var(--main-green-color);
   color: #fff !important;
 }
-/* 결과 페이지 */
+/* 키워드 검색 결과 페이지 */
 
 .result {
   display: none;
@@ -179,14 +196,15 @@ h1 {
 .section-array button {
   border: none;
   border-radius: 15px;
-  padding: 3px;
+  padding: 2px;
 }
 
 /* 검색 결과 카드 섹션 */
 .cards {
   text-align: center;
 }
-#cardHolder {
+#cardHolder1,
+#cardHolder2 {
   width: 1000px;
   display: inline-flex;
   margin-bottom: 100px;
@@ -201,19 +219,46 @@ h1 {
 
 /* 우측 네비게이션 */
 .navi {
-  position: fixed;
+  position: absolute;
   right: 40px;
   top: 50%;
   transform: translate(0, -50%);
   text-align: right;
+  background-color: seashell;
+  box-shadow: 4px 4px 5px var(--main-dark-color);
+  border-radius: 4px;
+}
+.navi:hover {
+  transition: 500ms;
+  padding: 10px;
+}
+ul#menu {
+  padding: 0px;
+  margin: 0;
 }
 .navi li {
-  list-style: none;
-  margin: 30px 0;
+  margin: 20px 20px;
+  list-style-type: none;
+  display: block;
+}
+.navi li::after {
+  content: "●";
+  font-size: 30px;
+  vertical-align: middle;
+  line-height: 20px;
+  color: #564a4a;
+}
+.navi li:hover {
+  transform: scale(1.4);
+  transition: 500ms;
+  transition-duration: 500ms;
 }
 .navi li a {
-  font-size: 12px;
+  font-size: 18px;
   color: var(--main-green-color) !important;
+}
+.hide-nav {
+  display: none;
 }
 
 /* 모바일사이즈 */

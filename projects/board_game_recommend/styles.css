@@ -1,26 +1,308 @@
-input.search-input {
-  width: 500px;
+/* 단축 */
+:root {
+  --main-green-color: #4aa96c;
+  --main-dark-color: #564a4a;
+}
+/* 초기 설정 */
+@font-face {
+  font-family: "GmarketSansMedium";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  font-family: "GmarketSansMedium";
+  margin: 0;
+  padding: 0;
+}
+body {
+  overflow: scroll;
+  -ms-overflow-style: none;
+}
+body::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+}
+
+.section {
+  border: 1px solid white;
+  min-height: 800px;
+}
+.container {
+  text-align: center;
+  font-size: 15px;
+  margin: 100px auto;
+}
+a {
+  text-decoration: none !important;
+  color: var(--main-dark-color) !important;
+}
+h1 {
+  text-align: left;
+}
+
+/* 텍스트 검색 인풋 박스 */
+.logo {
+  margin: 60px;
+}
+.logo h1 {
+  text-align: center;
+  font-weight: bold;
+  margin: -10px;
+}
+.logo h1:first-child {
+  color: var(--main-dark-color);
+}
+.logo h1:last-child {
+  color: var(--main-green-color);
+}
+.search-box {
+  margin: auto;
+  width: 90%;
+  max-width: 700px;
+}
+.search-input {
+  width: 100%;
+  height: 50px;
+  padding-left: 50px;
+  border-radius: 25px;
+  padding-top: 5px;
+  background: url(./images/pngegg.png) no-repeat scroll 7px;
+  background-size: 30px;
+}
+
+button.text-search-btn {
+  background-color: seashell;
+  border: 1px solid var(--main-dark-color);
+  border-radius: 25px;
+  width: 80px;
   height: 40px;
-  border: 1px solid black;
+  padding-top: 5px;
+}
+
+/* 텍스트 검색 결과 섹션*/
+.text-result-section {
+  margin-top: 40px;
+  display: none;
+}
+.result-h1-holder {
+  background-color: seashell;
+}
+
+.text-result-section h1 {
+  margin-bottom: 30px;
+}
+
+/* 추천 게임 섹션 */
+.recommend-box {
+  margin-top: 40px;
+  text-align: left;
+}
+.recommend-box h1 {
+  margin-bottom: 30px;
+  width: fit-content;
+  /* background-color: seashell;
+  padding: 5px;
+  box-shadow: 2px 2px 5px var(--main-dark-color);
+  border-radius: 4px; */
+}
+
+.cards {
+  width: 90%;
+  margin: auto;
+}
+
+.card {
+  text-align: left;
+  border: 1px solid #000 !important;
+  border-radius: 15px !important;
+  overflow: hidden;
+}
+.card:hover {
+  transition: 250ms;
+  transform: scale(1.05);
+}
+.game-title {
+  margin: 0;
+  font-weight: 800;
+}
+.col ul li {
+  font-size: 12px;
+}
+
+/* 키워드 검색페이지 */
+
+.btn-section {
+  width: 90%;
+  margin: 60px auto;
+  text-align: left;
+}
+.btn-section h5 {
+  margin: 20px 0;
+}
+
+.select-btn {
+  display: inline-block;
+  border: 1px solid #000;
   border-radius: 8px;
+  padding: 10px 20px;
+  margin: 0 2px;
+  transition: 0.5s;
 }
-.recommend-card-table {
-  border: 2px solid black;
-  border-radius: 10px;
-  height: 400px;
+.btn-section a:hover {
+  background-color: var(--main-green-color);
+  color: #fff !important;
+  border: 1px solid var(--main-green-color);
 }
-.recommend-card-table img {
-  width: 300px;
+.select-search-btn {
+  display: block;
+  width: 90%;
+  margin: auto;
+  padding: 15px;
+  border-radius: 30px;
+  background-color: var(--main-green-color);
+  color: #fff !important;
+  font-size: 20px;
 }
-.keyword-input-section td {
-  border: 1px solid gray;
-  border-radius: 5px;
+.btn-clicked {
+  background-color: var(--main-green-color);
+  border: 1px solid var(--main-green-color);
+  color: #fff !important;
 }
-.keyword-search-button {
-  background-color: green;
+/* 키워드 검색 결과 페이지 */
+
+.result {
+  display: none;
+  border: 1px solid #fff;
+  text-align: center;
+}
+.result h4 {
+  margin: 20px 0;
+}
+.result h4 b {
+  color: var(--main-green-color);
+}
+.result .cards {
+  margin: 60px auto 0px auto;
+}
+
+/* 정렬 기능 섹션 */
+.section-array {
+  display: none;
+  text-align: center;
+}
+.array-button-holder {
+  width: 950px;
+  background-color: var(--main-green-color);
+  border: 1px solid none;
+  border-radius: 10px !important;
+  margin-bottom: 20px;
+  padding: 8px;
+  text-align: left;
+  display: inline-block;
+}
+.section-array button {
   border: none;
-  border-radius: 20px;
-  width: 400px;
-  height: 30px;
-  color: white;
+  border-radius: 15px;
+  padding: 2px;
+}
+
+/* 검색 결과 카드 섹션 */
+.cards {
+  text-align: center;
+}
+#cardHolder1,
+#cardHolder2 {
+  width: 1000px;
+  display: inline-flex;
+  margin-bottom: 100px;
+}
+/* 소개 페이지 */
+#section-4 {
+  background-color: var(--main-green-color);
+}
+#section-4 > .container {
+  padding-top: 300px;
+}
+
+/* 우측 네비게이션 */
+.navi {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translate(0, -50%);
+  text-align: right;
+  background-color: seashell;
+  box-shadow: 4px 4px 5px var(--main-dark-color);
+  border-radius: 4px;
+}
+.navi:hover {
+  transition: 500ms;
+  padding: 10px;
+}
+ul#menu {
+  padding: 0px;
+  margin: 0;
+}
+.navi li {
+  margin: 20px 20px;
+  list-style-type: none;
+  display: block;
+}
+.navi li::after {
+  content: "●";
+  font-size: 25px;
+  vertical-align: middle;
+  line-height: 20px;
+  color: #564a4a;
+}
+.navi li:hover {
+  transform: scale(1.4);
+  transition: 500ms;
+  transition-duration: 500ms;
+}
+.navi li a {
+  font-size: 18px;
+  color: var(--main-green-color) !important;
+}
+.hide-nav {
+  display: none;
+}
+
+/* 모바일사이즈 */
+@media (max-width: 426px) {
+  * {
+    font-size: 80%;
+  }
+  .col:first-child,
+  .col:last-child {
+    display: none;
+  }
+  #section-1 {
+    max-height: 500px;
+  }
+  .card {
+    width: 250px;
+    text-align: center;
+  }
+  .col img {
+    width: 250;
+  }
+  .container {
+    margin: 0 auto 0 auto;
+  }
+  .navi {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translate(0, -50%);
+    text-align: right;
+  }
+  .btn-section {
+    margin: 0 auto 5px auto;
+  }
+  .select-search-btn {
+    margin-top: 20px;
+  }
 }

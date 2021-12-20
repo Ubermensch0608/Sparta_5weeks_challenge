@@ -86,6 +86,8 @@ function gameKeywordFinder() {
 }
 
 function gameTextFinder() {
+  let newValue = document.querySelector(".search-input").value;
+  console.log(newValue);
   $("#cardHolder1").empty();
   $.ajax({
     type: "GET",
@@ -98,8 +100,7 @@ function gameTextFinder() {
         let gu_mise = row[i]["IDEX_MVL"];
         let temp_html = ``;
         const searchBtn = $("input.search-input");
-        console.log(searchBtn.innerHTML);
-        if (gu_mise > 110) {
+        if (newValue.substr(0, 2) === gu_name.substr(0, 2)) {
           temp_html = `
           <div class="cards" id="newCard">
           <div class="col">

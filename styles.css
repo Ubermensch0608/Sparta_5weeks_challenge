@@ -74,7 +74,7 @@ h1 {
 
 button.text-search-btn {
   background-color: seashell;
-  border: 1px solid black;
+  border: 1px solid var(--main-dark-color);
   border-radius: 25px;
   width: 80px;
   height: 40px;
@@ -86,6 +86,10 @@ button.text-search-btn {
   margin-top: 40px;
   display: none;
 }
+.result-h1-holder {
+  background-color: seashell;
+}
+
 .text-result-section h1 {
   margin-bottom: 30px;
 }
@@ -97,6 +101,11 @@ button.text-search-btn {
 }
 .recommend-box h1 {
   margin-bottom: 30px;
+  width: fit-content;
+  /* background-color: seashell;
+  padding: 5px;
+  box-shadow: 2px 2px 5px var(--main-dark-color);
+  border-radius: 4px; */
 }
 
 .cards {
@@ -243,7 +252,7 @@ ul#menu {
 }
 .navi li::after {
   content: "●";
-  font-size: 30px;
+  font-size: 25px;
   vertical-align: middle;
   line-height: 20px;
   color: #564a4a;

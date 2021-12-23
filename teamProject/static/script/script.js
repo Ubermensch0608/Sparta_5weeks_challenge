@@ -1,0 +1,443 @@
+// 게임 이름 검색 버튼 누를 시 나타나는 검색 결과 구역
+$(".text-search-btn").click(function () {
+    $(".text-result-section").show();
+});
+
+// 우측 네비게이션 리모콘 가이드 함수
+$("#menu > li > a:nth-child(2)").mouseenter(function () {
+    $(this).siblings().removeClass('hide-nav');
+
+});
+$("#menu > li a:nth-child(2)").mouseleave(function () {
+    $(this).siblings().addClass('hide-nav');
+});
+const navi = $(".navi");
+$(window).scroll(function () {
+    clearTimeout($.data(this, "scrollTimer"));
+    $.data(
+        this,
+        "scrollTimer",
+        setTimeout(function () {
+            console.log("over");
+            navi.css("position", "fixed");
+        }, 500)
+    );
+});
+// 키워드 버튼 함수
+$("#number .select-btn").click(function () {
+    $("#number .select-btn").not(this).removeClass("btn-clicked");
+    $(this).toggleClass("btn-clicked");
+});
+$("#situation .select-btn").click(function () {
+    $("#situation .select-btn").not(this).removeClass("btn-clicked");
+    $(this).toggleClass("btn-clicked");
+});
+$("#genre .select-btn").click(function () {
+    $("#genre .select-btn").not(this).removeClass("btn-clicked");
+    $(this).toggleClass("btn-clicked");
+});
+// 키워드 검색용 배열
+var keywords = [
+    2, 3, 4, 5, 6, 7,
+    '친구와 함께', '연인과 함께', '가족과 함께', '아이스브레이킹',
+    '추리', '카드', '전략', '가족', '역동적'
+
+//인원 수 검색에서 range를 array로 만드는 함수
+function range(start, end) {
+    var ans = [];
+    for (let i = start; i <= end; i++) {
+        ans.push(i);
+    }
+    return ans;
+}function gameKeywordFinder() {
+    const clicked_keys = [];
+    $('.btn-clicked').each(function () { //사용자가 클릭한 버튼의 id값 가져오기
+        clicked_keys.push($(this).attr('id'));
+    });
+
+
+    $("#cardHolder2").empty();
+    $.ajax({
+        type: "GET",
+        url: "/search",
+        data: {},
+        success: function (response) {
+            let games = response['all_games'];
+            for (let i = 0; i < games.length; i++) {
+                let title = games[i]['title'];
+                let num_person = games[i]['num_person'];
+                let start = Number(num_person.charAt(0));
+                let end = Number(num_person.charAt(num_person.length - 1));
+
+                let person_arr = range(start, end);
+                let play_time = games[i]['play_time'];
+                let img = games[i]['img'];
+                let category = games[i]['category'];
+                let when = games[i]['when'];
+
+                let temp_html = ``;
+                let j, cnt = 0;
+                for (j = 0; j < clicked_keys.length; j++) {
+                    let key = clicked_keys[j]
+                    if (key <= 6) {
+                        for (let n = 0; n < person_arr.length; n++) {
+                            if (keywords[key - 1] === person_arr[n]) {
+                                cnt++;
+                            }
+                        }
+                    } else if (key <= 10) {
+                        if (keywords[key - 1] === when) {
+                            cnt++;
+                        }
+                    } else {
+                        if (keywords[key - 1] === category) {
+                            cnt++;
+                        }
+                    }
+                }
+                if (cnt === clicked_keys.length && title !== undefined) {
+                    temp_html = `<div class="col" id="newCard">
+                                 <div class="card h-100">
+                                    <img src="${img}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="game-title">${title}</h5>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">카테고리 : ${category}</li>
+                                        <li class="list-group-item">권장 인원수 : ${num_person}</li>
+                                        <li class="list-group-item">플레이 시간 : ${play_time}</li>
+                                    </ul>
+                                </div>
+                              </div>`;
+                    $("#cardHolder2").append(temp_html);
+                }
+                const newRoot = document.querySelector("#result");
+                const resultCheck = document.querySelectorAll("#newCard");
+                if (resultCheck.length != 0) {
+                    newRoot.innerHTML = `<h4>선택하신 다음 기준</h4>
+                                         <div class="selected-items"></div>
+                                         <h4>해당하는 보드게임 <b>${resultCheck.length}개</b>를 찾았어요!</h4>`;
+                    let temp_html2 = ``;
+                    for (let k = 0; k < active_elements.length; k++) {
+                        temp_html2 += `<a class="select-btn btn-selected">${active_elements[k].innerHTML}</a>`;
+                    }
+                    $(".selected-items").append(temp_html2);
+                    $(".result").show();
+                    $(".section-array").show();
+                } else {
+                    newRoot.innerHTML = `<div class="not-found"><h4>선택하신 기준에 해당하는 게임이 없어요 :(</h4>
+                                         <h4>다른 키워드로 검색해보세요!</h4>
+                                         <a href="#section-2" id="re-search">다시 검색</a></div>`
+                    $(".section-array").hide();
+                }
+            }
+        },
+    });
+
+//찾아주세요! 버튼 함수 (아무것도 누르지 않았을때, 결과페이지에 누른 버튼 삽입)
+function btn_next() {
+    $(".selected-items").empty();
+    var k_str = "";
+    active_elements = document.getElementsByClassName('btn-clicked');
+    k_str = "";
+    for (var i = 0; i < active_elements.length; i++) {
+        if (k_str == "")
+            k_str = active_elements[i].innerHTML;
+        else
+            k_str = k_str + "," + active_elements[i].innerHTML;
+    }
+    if (k_str == "") {
+        alert('1개 이상의 키워드를 선택해 주세요!')
+    } else {
+        gameKeywordFinder();
+    }
+}
+
+// 자동완성용 배열 만들기
+// var ref = [];
+// window.onload = function () {
+//   $.ajax({
+//     type: "GET",
+//     url: "/search",
+//     data: {},
+//     success: function (response) {
+//       let games = response["all_games"];
+//       for (let i = 0; i < games.length; i++) {
+//         var temp_arr = {
+//           key: i,
+//           name: games[i]["title"],
+//         };
+//         ref.push(temp_arr);
+//       }
+//     },
+//   });
+// };
+//
+// 메인 페이지 텍스트 검색 함수
+function gameTextFinder() {
+    $('#autoMaker').hide();
+    let newValue = document.querySelector(".search-input").value;
+    let value_cnt = 0;
+
+    $("#cardHolder1").empty();
+    $.ajax({
+        type: "GET",
+        url: "/search",
+        data: {},
+        success: function (response) {
+            let games = response['all_games'];
+            for (let i = 0; i < games.length; i++) {
+                let title = games[i]['title'];
+                let num_person = games[i]['num_person'];
+                let play_time = games[i]['play_time'];
+                let img = games[i]['img'];
+                let category = games[i]['category'];
+                let when = games[i]['when'];
+                let temp_html = ``;
+
+                const searchBtn = $("input.search-input");
+                let title_length = title.length;
+                let text_length = newValue.length;
+                if (text_length <= title_length && text_length != 0) {
+                    if (newValue.substr(0, text_length) === title.substr(0, text_length)) {
+                        value_cnt++;
+                        temp_html = `<div class="col">
+                            <div class="card h-100">
+                                <img src="${img}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="game-title">${title}</h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">장르 : ${category}</li>
+                                    <li class="list-group-item">권장 인원수 : ${num_person}</li>
+                                    <li class="list-group-item">플레이 시간 : ${play_time}</li>
+                                </ul>
+                            </div>
+                          </div>`;
+                    }
+                }
+                $("#cardHolder1").append(temp_html);
+                let root = document.querySelector("b");
+                root.innerHTML = `${newValue}`;
+                root = document.querySelector("i");
+                root.innerHTML = `${value_cnt}`;
+            }
+        },
+    });
+}
+
+//자동 완성 관련
+var ref = [];
+function insertkey(statusItem) {
+    var strText = $(statusItem).text();
+    $('.search-input').val(strText);
+window.onload = function () {
+    $.ajax({
+        type: "GET",
+        url: "/search",
+        data: {},
+        success: function (response) {
+            let games = response['all_games'];
+            for (let i = 0; i < games.length; i++) {
+                var temp_arr = {key: i, name: games[i]['title']};
+                ref.push(temp_arr);
+            }
+        },
+        complete: function () {
+            var isComplete = false;  //autoMaker 자식이 선택 되었는지 여부
+            $('.search-input').keyup(function () {
+                var txt = $(this).val();
+                if (txt != '') {  //빈줄이 들어오면
+                    $('#autoMaker').children().remove();
+                    $('#autoMaker').hide();
+                    ref.forEach(function (arg) {
+                        if (arg.name.indexOf(txt) > -1) {
+                            $('#autoMaker').append(
+                                $('<div class="hint" onclick="insertkey(this)">').text(arg.name).attr({'key': arg.key})
+                            );
+                            $("#autoMaker").show();
+                        }
+                    });
+                } else {
+                    $('#autoMaker').children().remove();
+                    $("#autoMaker").hide();
+                }
+            });
+            $('.search-input').keydown(function (event) {
+                if (isComplete) {  //autoMaker 자식이 선택 되었으면 초기화
+                    $('#insert_target').val('')
+                    $("#autoMaker").hide();
+                }
+            })
+        }
+    });
+}
+// 메인페이지 랜덤 추천
+const selectIndex = (totalIndex, selectingNumber) => {
+    let randomIndexArray = []
+    for (let i = 0; i < selectingNumber; i++) {   //check if there is any duplicate index
+        let randomNum = Math.floor(Math.random() * totalIndex);
+        if (randomIndexArray.indexOf(randomNum) === -1) {
+            randomIndexArray.push(randomNum);
+        } else { //if the randomNum is already in the array retry
+            i--;
+        }
+    }
+    return randomIndexArray;
+}
+
+window.onload = function () {
+    $.ajax({
+        type: "GET",
+        url: "/search",
+        data: {},
+        success: function (response) {
+            let games = response['all_games'];
+            let ran = selectIndex(games.length - 1, 3)
+            for (let i = 0; i < 3; i++) {
+                let title = games[ran[i]]['title'];
+                let num_person = games[ran[i]]['num_person'];
+                let play_time = games[ran[i]]['play_time'];
+                let img = games[ran[i]]['img'];
+                let category = games[ran[i]]['category'];
+                let when = games[ran[i]]['when'];
+                console.log('title');
+                let temp_html = `<div class="col">
+                                      <div class="card h-100">
+                                        <img src="${img}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                          <h5 class="game-title">${title}</h5>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                          <li class="list-group-item">카테고리 : ${category}</li>
+                                          <li class="list-group-item">권장 인원수 : ${num_person}</li>
+                                          <li class="list-group-item">플레이 시간 : ${play_time}</li>
+                                          </ul>
+                                        </div>
+                                 </div>`;
+                let root = document.querySelector("#random-game");
+                root.innerHTML += temp_html;
+            }
+        }
+    },)
+}
+
+var isComplete = false; //autoMaker 자식이 선택 되었는지 여부
+$(".search-input").keyup(function () {
+  $("#autoMaker").show();
+  var txt = $(this).val();
+  if (txt != "") {
+    //빈줄이 들어오면
+    $("#autoMaker").children().remove();
+
+    ref.forEach(function (arg) {
+      if (arg.name.indexOf(txt) > -1) {
+        $("#autoMaker").append(
+          $('<div class="hint">').text(arg.name).attr({
+            key: arg.key,
+          })
+        );
+      }
+    });
+    $("#autoMaker")
+      .children()
+      .each(function () {
+        $(this).click(function () {
+          $(".search-input").val($(this).text());
+          $("#insert_target").val(
+            "key : " + $(this).attr("key") + ", data : " + $(this).text()
+          );
+          $("#autoMaker").children().remove();
+          isComplete = true;
+        });
+      });
+  } else {
+    $("#autoMaker").children().remove();
+    $("#autoMaker").hide();
+  }
+});
+$(".search-input").keydown(function (event) {
+  if (isComplete) {
+    //autoMaker 자식이 선택 되었으면 초기화
+    $("#insert_target").val("");
+  }
+});
+
+// dark mode
+let isBright = true;
+const darkModeBtn = document.querySelector(".dark-mode-btn");
+$("button.dark-mode-btn").click(function () {
+  if (isBright === true) {
+    isBright = false;
+    darkModeBtn.innerHTML = "bright";
+    $("body").css("background-color", "#564a4a");
+    $("body").css("color", "#fff");
+    $(".logo h2:first-child").css("color", "seashell");
+    $("h5.game-title").css("color", "#000");
+    $(".dark-mode-btn").css("background-color", "seashell");
+    $(".dark-mode-btn").css("color", "#000");
+  } else {
+    isBright = true;
+    darkModeBtn.innerHTML = "dark";
+    $("body").removeAttr("style");
+    $(".logo h2:first-child").removeAttr("style");
+    $("#search h5").removeAttr("style");
+    $(".dark-mode-btn").removeAttr("style");
+    $(".dark-mode-btn").removeAttr("style");
+  }
+});
+
+//세부 정보 표출
+$(".col").click(() => {
+  $(".content-box").empty();
+  let temp_html = `
+  <div id="wrapper" class="content-box">
+    <div class="content-inner">
+        <div class="content-left">
+          <div class="content-left__img"><img src="../static/images/1루미1.png"></div>
+        </div>
+
+        <div class="content-right">
+          <div class="content-info">
+            <div class="info-top">
+              <span class='contnet-top__close'><img src="../static/images/close-btn.png"></span>
+            </div>
+            <div class ="info-content">
+              <span class="content-top__title">루미큐브</span>
+            </div>
+            <div class="info-content">
+              <div class="info-content__detail">
+                <p>남녀노소 누구나 사랑하는 타일조합 손털기 게임! <br> 
+                세계인의 게임 루미큐브!</p>
+              </div>
+            </div>
+            <div class="info-content">
+              <span class="content-rule">
+                <b>난이도</b> Normal
+              </span>
+              <span class="content-rule">
+                <b>인원</b> 2-4인
+              </span>
+              <span class="content-rule">
+                <b>게임시간</b> 30분
+              </span>
+            </div>
+            <div class="info-content">
+              <a href="https://www.naver.com/" target="_blank" class="content_url">관련영상</a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  `;
+  $(".modal_content").append(temp_html);
+});
+
+$(function () {
+  $(".col").click(function () {
+    $(".modal").fadeIn();
+  });
+  $(".modal_content").click(function () {
+    $(".modal").fadeOut();
+  });
+})

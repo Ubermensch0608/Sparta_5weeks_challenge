@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-</html>
+<html lang="ko">
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -21,8 +21,6 @@
   <div class="dark-mode">
     <button class="dark-mode-btn">night</button>
   </div>
-
-  <body data-lang="ko">
     <!-- 우측 네비게이션 -->
     <div class="navi">
       <ul id="menu">
@@ -41,83 +39,31 @@
           <h2>BOARD</h2>
         </div>
 
-        <div class="search-box">
-          <span class="input-holder"><input class="search-input" type="text" value=""
-              onkeyup="if(window.event.keyCode==13){gameTextFinder()}" placeholder="정보가 궁금한 보드게임 이름을 입력해 보세요!" /></span>
-          <span class="btn-holder"><button class="text-search-btn" onclick="gameTextFinder()"><img
-                src="../static/images/pngegg.png" alt="검색"></button></span>
-          <div id="autoMaker"></div>
-        </div>
+      <div class="search-box">
+        <span class="input-holder"><input class="search-input" type="text" value="" onkeyup="if(window.event.keyCode==13){gameTextFinder()}" placeholder="정보가 궁금한 보드게임 이름을 입력해 보세요!"/></span>
+        <span class="btn-holder"><button class="text-search-btn" onclick="gameTextFinder()"><img src="../static/images/pngegg.png" alt="검색"></button></span>
+        <div id="autoMaker"></div>
+      </div>
 
-        <!-- 타이핑 검색결과 창 -->
-        <div class="text-result-section">
-          <h2>검색 결과입니다.</h2>
-          <div class="cards">
-            <div class="row row-cols-1 row-cols-md-3 g-5" id="cardHolder1">
-            </div>
-          </div>
-        </div>
-
-
-        <!-- 오늘의 게임 추천 -->
-        <div class="recommend-box">
-          <h2>지금, 이 보드게임 어때요?</h2>
-          <div class="cards">
-            <ul class="row row-cols-1 row-cols-md-3 g-5">
-              <li>
-                <div class="col">
-                  <div class="card h-100">
-                    <img src="../static/images/루미큐브.jfif" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="game-title">루미큐브</h5>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">장르</li>
-                      <li class="list-group-item">권장 인원수</li>
-                      <li class="list-group-item">플레이 시간</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="col">
-                  <div class="card h-100">
-                    <img src="../static/images/루미큐브.jfif" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="game-title">루미큐브</h5>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">장르</li>
-                      <li class="list-group-item">권장 인원수</li>
-                      <li class="list-group-item">플레이 시간</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="col">
-                  <div class="card h-100">
-                    <img src="../static/images/루미큐브.jfif" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="game-title">루미큐브</h5>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">장르</li>
-                      <li class="list-group-item">권장 인원수</li>
-                      <li class="list-group-item">플레이 시간</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
+    <!-- 타이핑 검색결과 창 -->
+      <div class="text-result-section">
+        <h2><b></b>에 대한 검색 결과는 <i></i>건이에요!</h2>
+        <div class="cards">
+          <div class="row row-cols-1 row-cols-md-3 g-5" id="cardHolder1">
           </div>
         </div>
       </div>
-    </div>
-    </div>
- 
 
-
+       <!-- 오늘의 게임 추천 -->
+      <div class="recommend-box">
+        <h2>지금, 이 보드게임 어때요?</h2>
+          <div class="cards">
+             <div class="row row-cols-1 row-cols-md-3 g-5" id="random-game">
+             </div>
+          </div>
+      </div>
+    </div>
+  </div>
     <!-- 게임 키워드 검색 페이지 -->
     <div class="section" id="section-2">
       <div class="container" id="search">
@@ -146,7 +92,7 @@
         </div>
 
         <div class="btn-section">
-          <h5 class="category">게임 장르</h5>
+          <h5 class="category">게임 카테고리</h5>
           <div id="genre">
             <a class="select-btn" id="11">추리</a>
             <a class="select-btn" id="12">카드</a>
@@ -155,16 +101,12 @@
             <a class="select-btn" id="15">역동적</a>
           </div>
         </div>
-        <a href="#result" class="select-search-btn" onclick=btn_next()>찾아주세요!</a>
-      </div>
+          <a href="javascript:setTimeout(()=>{window. location = '#result' },500);" class="select-search-btn" onclick="btn_next()">찾아주세요!</a>
     </div>
+  </div>
 
     <!-- 검색 결과 페이지 -->
     <div class="container result" id="result">
-      <h4>선택하신 다음 기준</h4>
-      <div class="selected-items"></div>
-      <h4>해당하는 보드게임
-        <b></b>를 찾았어요!</h4>
     </div>
 
     <!-- 정렬 기능 섹션 -->
@@ -200,9 +142,6 @@
            title="클릭하면 창이 닫힙니다.">
       </div>
     </div>
-<!-- 세부창 생성 -->
-
-
 
     <script src="../static/script/jquery-1.12.4.js"></script>
     <script src="../static/script/script.js"></script>

@@ -11,18 +11,7 @@ $("#menu > li > a:nth-child(2)").mouseenter(function () {
 $("#menu > li a:nth-child(2)").mouseleave(function () {
     $(this).siblings().addClass('hide-nav');
 });
-const navi = $(".navi");
-$(window).scroll(function () {
-    clearTimeout($.data(this, "scrollTimer"));
-    $.data(
-        this,
-        "scrollTimer",
-        setTimeout(function () {
-            console.log("over");
-            navi.css("position", "fixed");
-        }, 500)
-    );
-});
+
 // 키워드 버튼 함수
 $("#number .select-btn").click(function () {
     $("#number .select-btn").not(this).removeClass("btn-clicked");
@@ -40,7 +29,7 @@ $("#genre .select-btn").click(function () {
 var keywords = [
     2, 3, 4, 5, 6, 7,
     '친구와 함께', '연인과 함께', '가족과 함께', '아이스브레이킹',
-    '추리', '카드', '전략', '가족', '역동적'
+    '추리', '카드', '전략', '가족', '역동적'];
 
 //인원 수 검색에서 range를 array로 만드는 함수
 function range(start, end) {
@@ -49,13 +38,13 @@ function range(start, end) {
         ans.push(i);
     }
     return ans;
-}function gameKeywordFinder() {
+}
+
+function gameKeywordFinder() {
     const clicked_keys = [];
     $('.btn-clicked').each(function () { //사용자가 클릭한 버튼의 id값 가져오기
         clicked_keys.push($(this).attr('id'));
     });
-
-
     $("#cardHolder2").empty();
     $.ajax({
         type: "GET",
@@ -133,6 +122,7 @@ function range(start, end) {
             }
         },
     });
+}
 
 //찾아주세요! 버튼 함수 (아무것도 누르지 않았을때, 결과페이지에 누른 버튼 삽입)
 function btn_next() {
@@ -153,26 +143,6 @@ function btn_next() {
     }
 }
 
-// 자동완성용 배열 만들기
-// var ref = [];
-// window.onload = function () {
-//   $.ajax({
-//     type: "GET",
-//     url: "/search",
-//     data: {},
-//     success: function (response) {
-//       let games = response["all_games"];
-//       for (let i = 0; i < games.length; i++) {
-//         var temp_arr = {
-//           key: i,
-//           name: games[i]["title"],
-//         };
-//         ref.push(temp_arr);
-//       }
-//     },
-//   });
-// };
-//
 // 메인 페이지 텍스트 검색 함수
 function gameTextFinder() {
     $('#autoMaker').hide();
@@ -226,52 +196,59 @@ function gameTextFinder() {
     });
 }
 
-//자동 완성 관련
+// 자동완성 배열 만들기
 var ref = [];
-function insertkey(statusItem) {
-    var strText = $(statusItem).text();
-    $('.search-input').val(strText);
-window.onload = function () {
+
     $.ajax({
         type: "GET",
         url: "/search",
         data: {},
         success: function (response) {
-            let games = response['all_games'];
-            for (let i = 0; i < games.length; i++) {
-                var temp_arr = {key: i, name: games[i]['title']};
-                ref.push(temp_arr);
-            }
+          let games = response['all_games'];
+          for (let i = 0; i < games.length; i++) {
+            var temp_arr = {key: i, name: games[i]['title']};
+            ref.push(temp_arr);
+          }
+          console.log(ref);
         },
-        complete: function () {
-            var isComplete = false;  //autoMaker 자식이 선택 되었는지 여부
-            $('.search-input').keyup(function () {
-                var txt = $(this).val();
-                if (txt != '') {  //빈줄이 들어오면
-                    $('#autoMaker').children().remove();
-                    $('#autoMaker').hide();
-                    ref.forEach(function (arg) {
-                        if (arg.name.indexOf(txt) > -1) {
-                            $('#autoMaker').append(
-                                $('<div class="hint" onclick="insertkey(this)">').text(arg.name).attr({'key': arg.key})
-                            );
-                            $("#autoMaker").show();
-                        }
-                    });
-                } else {
-                    $('#autoMaker').children().remove();
-                    $("#autoMaker").hide();
-                }
-            });
-            $('.search-input').keydown(function (event) {
-                if (isComplete) {  //autoMaker 자식이 선택 되었으면 초기화
-                    $('#insert_target').val('')
-                    $("#autoMaker").hide();
-                }
-            })
-        }
     });
-}
+
+// 자동완성 함수
+var isComplete = false;  //autoMaker 자식이 선택 되었는지 여부
+$('.search-input').keyup(function(){
+  var txt = $(this).val();
+  if(txt != ''){  //빈줄이 들어오면
+      $('#autoMaker').children().remove();
+      $('#autoMaker').hide();
+      ref.forEach(function(arg){
+          if(arg.name.indexOf(txt) > -1 ){
+              console.log('얍얍');
+              $('#autoMaker').append(
+                  $('<div class="hint">').text(arg.name).attr({'key':arg.key})
+              );
+              $("#autoMaker").show();
+          }
+      });
+      $('#autoMaker').children().each(function(){
+          $(this).click(function(){
+              $('.search-input').val($(this).text());
+              $('#insert_target').val("key : "+$(this).attr('key')+ ", data : " + $(this).text());
+              isComplete = true;
+          });
+      });
+  } else {
+      $('#autoMaker').children().remove();
+      $("#autoMaker").hide();
+  }
+});
+$('.search-input').keydown(function(event){
+  if(isComplete) {  //autoMaker 자식이 선택 되었으면 초기화
+      $('#insert_target').val('')
+      $("#autoMaker").hide();
+  }
+})
+
+
 // 메인페이지 랜덤 추천
 const selectIndex = (totalIndex, selectingNumber) => {
     let randomIndexArray = []
@@ -321,47 +298,6 @@ window.onload = function () {
         }
     },)
 }
-
-var isComplete = false; //autoMaker 자식이 선택 되었는지 여부
-$(".search-input").keyup(function () {
-  $("#autoMaker").show();
-  var txt = $(this).val();
-  if (txt != "") {
-    //빈줄이 들어오면
-    $("#autoMaker").children().remove();
-
-    ref.forEach(function (arg) {
-      if (arg.name.indexOf(txt) > -1) {
-        $("#autoMaker").append(
-          $('<div class="hint">').text(arg.name).attr({
-            key: arg.key,
-          })
-        );
-      }
-    });
-    $("#autoMaker")
-      .children()
-      .each(function () {
-        $(this).click(function () {
-          $(".search-input").val($(this).text());
-          $("#insert_target").val(
-            "key : " + $(this).attr("key") + ", data : " + $(this).text()
-          );
-          $("#autoMaker").children().remove();
-          isComplete = true;
-        });
-      });
-  } else {
-    $("#autoMaker").children().remove();
-    $("#autoMaker").hide();
-  }
-});
-$(".search-input").keydown(function (event) {
-  if (isComplete) {
-    //autoMaker 자식이 선택 되었으면 초기화
-    $("#insert_target").val("");
-  }
-});
 
 // dark mode
 let isBright = true;
@@ -440,4 +376,4 @@ $(function () {
   $(".modal_content").click(function () {
     $(".modal").fadeOut();
   });
-})
+});

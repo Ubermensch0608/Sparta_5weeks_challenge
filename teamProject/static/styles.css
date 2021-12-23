@@ -28,21 +28,12 @@ body::-webkit-scrollbar {
 }
 ul {
   list-style: none;
-  padding-left: 0px;
+  padding-left: 0;
 }
 div {
   display: block;
 }
 
-p {
-  margin-top: 0;
-  margin-bottom: 0.9rem;
-  display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-}
 .section {
   padding: 0 10%;
   /* border: 1px solid white; */
@@ -111,14 +102,13 @@ h2 {
   width: 100%;
   height: 100%;
 }
-/* button.text-search-btn {
-  background-color: seashell;
-  border: 1px solid var(--main-dark-color);
-  border-radius: 25px;
-  width: 80px;
-  height: 40px;
-  padding-top: 5px;
-} */
+
+.text-result-section > h2 > b,
+.text-result-section > h2 > i {
+  font-weight: normal;
+  font-style: normal;
+  color: var(--main-green-color);
+}
 
 /* 텍스트 검색 결과 섹션*/
 .text-result-section {
@@ -144,12 +134,7 @@ h2 {
 .recommend-box h2 {
   margin-bottom: 30px;
   width: fit-content;
-  /* background-color: seashell;
-  padding: 5px;
-  box-shadow: 2px 2px 5px var(--main-dark-color);
-  border-radius: 4px; */
 }
-
 .cards {
   width: 90%;
   margin: auto;
@@ -174,7 +159,6 @@ h2 {
 }
 
 /* 키워드 검색페이지 */
-
 .btn-section {
   width: 90%;
   margin: 40px auto;
@@ -213,7 +197,11 @@ h2 {
   border: 1px solid var(--main-green-color);
   color: #fff !important;
 }
-
+.btn-selected {
+  background-color: var(--main-green-color);
+  border: 1px solid var(--main-green-color);
+  color: #fff !important;
+}
 .search-box {
   position: relative;
 }
@@ -251,7 +239,18 @@ h2 {
 .result h4 b {
   color: var(--main-green-color);
 }
-
+.not-found {
+  margin: 325px auto;
+}
+#re-search {
+  display: inline-block;
+  background-color: var(--main-green-color)!important;
+  border: 1px solid var(--main-green-color)!important;
+  color: #fff !important;
+  padding: 10px 20px;
+  border-radius: 20px;
+  margin-top: 50px;
+}
 /* 정렬 기능 섹션 */
 .section-array {
   display: none;
@@ -261,7 +260,7 @@ h2 {
 .array-button-holder {
   width: 90%;
   background-color: var(--main-green-color);
-  border: 1px solid none;
+  border: 1px solid black;
   border-radius: 30px !important;
   margin-bottom: 20px;
   padding: 8px;
@@ -316,7 +315,7 @@ h2 {
   fill: rgb(255, 196, 0);
 }
 ul#menu {
-  padding: 0px;
+  padding:0;
   margin: 0;
 }
 .navi li {
@@ -385,7 +384,7 @@ ul#menu {
   width: 100%;
 }
 .content-inner {
-  display: inline-flexbox;
+  display: inline-flex;
   width: 100%;
 }
 .content-left {
@@ -427,6 +426,9 @@ ul#menu {
   * {
     font-size: 80%;
   }
+  .logo h2 {
+    padding-bottom: 10px;
+  }
   .col:first-child,
   .col:last-child {
     display: none;
@@ -439,7 +441,7 @@ ul#menu {
     text-align: center;
   }
   .col img {
-    width: 250;
+    width: 250px;
   }
   .container {
     margin: 0 auto 0 auto;

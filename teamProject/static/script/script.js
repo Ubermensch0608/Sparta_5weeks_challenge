@@ -209,7 +209,6 @@ var ref = [];
             var temp_arr = {key: i, name: games[i]['title']};
             ref.push(temp_arr);
           }
-          console.log(ref);
         },
     });
 
@@ -222,7 +221,6 @@ $('.search-input').keyup(function(){
       $('#autoMaker').hide();
       ref.forEach(function(arg){
           if(arg.name.indexOf(txt) > -1 ){
-              console.log('얍얍');
               $('#autoMaker').append(
                   $('<div class="hint">').text(arg.name).attr({'key':arg.key})
               );
@@ -276,12 +274,12 @@ window.onload = function () {
                 let num_person = games[ran[i]]['num_person'];
                 let play_time = games[ran[i]]['play_time'];
                 let img = games[ran[i]]['img'];
+                let rb_img = games[ran[i]]['RB_img'];
                 let category = games[ran[i]]['category'];
                 let when = games[ran[i]]['when'];
-                console.log('title');
                 let temp_html = `<div class="col">
                                       <div class="card h-100">
-                                        <img src="${img}" class="card-img-top" alt="...">
+                                        <img src="${rb_img}" class="card-img-top" alt="...">
                                         <div class="card-body">
                                           <h5 class="game-title">${title}</h5>
                                         </div>
@@ -324,56 +322,89 @@ $("button.dark-mode-btn").click(function () {
 });
 
 //세부 정보 표출
-$(".col").click(() => {
-  $(".content-box").empty();
-  let temp_html = `
-  <div id="wrapper" class="content-box">
-    <div class="content-inner">
-        <div class="content-left">
-          <div class="content-left__img"><img src="../static/images/1루미1.png"></div>
-        </div>
 
-        <div class="content-right">
-          <div class="content-info">
-            <div class="info-top">
-              <span class='contnet-top__close'><img src="../static/images/close-btn.png"></span>
+$(".card").click(() => {
+
+});
+
+// 모달창 생성
+$(document).on('click',".card",function (event){
+    $(".modal_content").empty();
+    let target_path_1 = $(this)[0]
+    let target_path_2 = target_path_1.querySelector('.game-title').innerText
+    let target_path_3 = target_path_1.querySelector('img').attributes[0].value
+    console.log(target_path_3)
+    console.log(target_path_2)
+    $.ajax({
+      type: "GET",
+      url: "/search",
+      data: {},
+      success: function (response) {
+            let games = response['all_games']
+          console.log(games)
+           for (let i=0; i<games.length; i++) {
+               let rb_img = games[i]['RB_img']
+               let rb_category = games[i]['category']
+               let rb_desc = games[i]['desc']
+               let rb_person = games[i]['num_person']
+               let rb_playtime = games[i]['play_time']
+               let rb_title = games[i]['title']
+               let rb_when = games[i]['when']
+               let rb_yt_link = games[i]['youtube_link']
+               let rb_yt_title = games[i]['youtube_titlle']
+
+               if(target_path_2 === rb_title) {
+                    let temp_html = `
+      <div id="wrapper" class="content-box">
+        <div class="content-inner">
+            <div class="content-left">
+              <div class="content-left__img"><img src="${rb_img}"></div>
             </div>
-            <div class ="info-content">
-              <span class="content-top__title">루미큐브</span>
-            </div>
-            <div class="info-content">
-              <div class="info-content__detail">
-                <p>남녀노소 누구나 사랑하는 타일조합 손털기 게임! <br> 
-                세계인의 게임 루미큐브!</p>
+    
+            <div class="content-right">
+              <div class="content-info">
+                <div class="info-top">
+                  <span class='content-top__close'><img src="../static/images/close-btn.png"></span>
+                </div>
+                <div class ="info-content">
+                  <span class="content-top__title">${rb_title}</span>
+                </div>
+                <div class="info-content">
+                  <div class="info-content__detail">
+                    <p>${rb_desc}<br> 
+                    </p>
+                  </div>
+                </div>
+                <div class="info-content">
+                  <span class="content-rule">
+                    <b>난이도</b> Normal
+                  </span>
+                  <span class="content-rule">
+                    <b>인원</b> ${rb_person}
+                  </span>
+                  <span class="content-rule">
+                    <b>게임시간</b> ${rb_playtime}
+                  </span>
+                </div>
+                <div class="info-content">
+                  <a href="${rb_yt_link}" target="_blank" class="content_url">${rb_yt_title}</a>
+                </div>
               </div>
             </div>
-            <div class="info-content">
-              <span class="content-rule">
-                <b>난이도</b> Normal
-              </span>
-              <span class="content-rule">
-                <b>인원</b> 2-4인
-              </span>
-              <span class="content-rule">
-                <b>게임시간</b> 30분
-              </span>
-            </div>
-            <div class="info-content">
-              <a href="https://www.naver.com/" target="_blank" class="content_url">관련영상</a>
-            </div>
-          </div>
         </div>
-    </div>
-  </div>
-  `;
-  $(".modal_content").append(temp_html);
-});
+      </div>
+      `;
+      $(".modal_content").append(temp_html);
+            } else if (target_path_3 == 'undefined') {
+                 $('.modal').fadeOut()
+               }
 
-$(function () {
-  $(".col").click(function () {
-    $(".modal").fadeIn();
-  });
-  $(".modal_content").click(function () {
-    $(".modal").fadeOut();
-  });
-});
+           }
+
+    }
+  })
+    $('.modal').fadeIn()
+})
+$(document).on('click',".content-top__close",function (event){
+    $('.modal').fadeOut()
+})

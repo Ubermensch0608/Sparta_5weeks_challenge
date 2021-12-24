@@ -310,6 +310,7 @@ $("button.dark-mode-btn").click(function () {
     $("h5.game-title").css("color", "#000");
     $(".dark-mode-btn").css("background-color", "seashell");
     $(".dark-mode-btn").css("color", "#000");
+    $('.modal_content').css('color', '#000');
   } else {
     isBright = true;
     darkModeBtn.innerHTML = "dark";
@@ -333,8 +334,7 @@ $(document).on('click',".card",function (event){
     let target_path_1 = $(this)[0]
     let target_path_2 = target_path_1.querySelector('.game-title').innerText
     let target_path_3 = target_path_1.querySelector('img').attributes[0].value
-    console.log(target_path_3)
-    console.log(target_path_2)
+
     $.ajax({
       type: "GET",
       url: "/search",
@@ -353,7 +353,14 @@ $(document).on('click',".card",function (event){
                let rb_yt_link = games[i]['youtube_link']
                let rb_yt_title = games[i]['youtube_titlle']
 
+
+
                if(target_path_2 === rb_title) {
+                   let desc_1 = rb_desc.substr(0,26)
+                   let desc_2 = rb_desc.substr(26)
+                   let yt_title_1 = rb_yt_title.substr(0,26)
+                   let yt_title_2 = rb_yt_title.substr(26)
+
                     let temp_html = `
       <div id="wrapper" class="content-box">
         <div class="content-inner">
@@ -371,7 +378,7 @@ $(document).on('click',".card",function (event){
                 </div>
                 <div class="info-content">
                   <div class="info-content__detail">
-                    <p>${rb_desc}<br> 
+                    <p>${desc_1}<br>${desc_2} 
                     </p>
                   </div>
                 </div>
@@ -387,7 +394,7 @@ $(document).on('click',".card",function (event){
                   </span>
                 </div>
                 <div class="info-content">
-                  <a href="${rb_yt_link}" target="_blank" class="content_url">${rb_yt_title}</a>
+                  <a href="${rb_yt_link}" target="_blank" class="content_url">${yt_title_1}<br>${yt_title_2}</a>
                 </div>
               </div>
             </div>

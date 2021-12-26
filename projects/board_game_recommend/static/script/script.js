@@ -40,6 +40,7 @@ function range(start, end) {
     return ans;
 }
 
+// 키워드 검색 버튼 함수
 function gameKeywordFinder() {
     const clicked_keys = [];
     $('.btn-clicked').each(function () { //사용자가 클릭한 버튼의 id값 가져오기
@@ -52,6 +53,92 @@ function gameKeywordFinder() {
         data: {},
         success: function (response) {
             let games = response['all_games'];
+            for (let i = 0; i < games.length; i++) {
+                let title = games[i]['title'];
+                let num_person = games[i]['num_person'];
+                let start = Number(num_person.charAt(0));
+                let end = Number(num_person.charAt(num_person.length - 1));
+
+                let rb_img = games[i]['RB_img']
+                let person_arr = range(start, end);
+                let play_time = games[i]['play_time'];
+                let img = games[i]['img'];
+                let category = games[i]['category'];
+                let when = games[i]['when'];
+
+                let temp_html = ``;
+                let j, cnt = 0;
+                for (j = 0; j < clicked_keys.length; j++) {
+                    let key = clicked_keys[j]
+                    if (key <= 6) {
+                        for (let n = 0; n < person_arr.length; n++) {
+                            if (keywords[key - 1] === person_arr[n]) {
+                                cnt++;
+                            }
+                        }
+                    } else if (key <= 10) {
+                        if (keywords[key - 1] === when) {
+                            cnt++;
+                        }
+                    } else {
+                        if (keywords[key - 1] === category) {
+                            cnt++;
+                        }
+                    }
+                }
+                if (cnt === clicked_keys.length && title !== undefined) {
+                    temp_html = `<div class="card keyword-result">
+                                    <div class="card-body">
+                                      <div class="card-top"> 
+                                         <img src="${rb_img}" class="card-img-top" alt="...">
+                                       </div>
+                                       
+                                       <div class="card-bottom"> 
+                                          <h5 class="game-title">${title}</h5>
+                                       </div>
+                                    </div>
+                                  </div>`;
+                    $("#keyword").append(temp_html);
+                }
+                const newRoot = document.querySelector("#cardHolder2");
+                const resultCheck = document.querySelectorAll(".keyword-result");
+                if (resultCheck.length != 0) {
+                    newRoot.innerHTML = `<h4>선택하신 다음 기준</h4>
+                                         <div class="selected-items"></div>
+                                         <h4>해당하는 보드게임 <b>${resultCheck.length}개</b>를 찾았어요!</h4>`;
+                    let temp_html2 = ``;
+                    for (let k = 0; k < active_elements.length; k++) {
+                        temp_html2 += `<a class="select-btn btn-selected">${active_elements[k].innerHTML}</a>`;
+                    }
+                    $(".selected-items").append(temp_html2);
+                    $("#cardHolder2").show();
+                    $(".section-array").show();
+                } else {
+                    newRoot.innerHTML = `<div class="not-found"><h4>선택하신 기준에 해당하는 게임이 없어요 :(</h4>
+                                         <h4>다른 키워드로 검색해보세요!</h4>
+                                         <a href="#section-2" id="re-search">다시 검색</a></div>`
+                    $(".section-array").hide();
+                }
+            }
+        },
+    });
+}
+
+// 카드 정렬
+let cards_arr = [];
+function keywordSort() {
+    const clicked_keys = [];
+    $('.btn-clicked').each(function () { //사용자가 클릭한 버튼의 id값 가져오기
+        clicked_keys.push($(this).attr('id'));
+    });
+
+    $("#cardHolder2").empty();
+    $.ajax({
+        type: "GET",
+        url: "/search",
+        data: {},
+        success: function (response) {
+                    let games = response['all_games'];
             for (let i = 0; i < games.length; i++) {
                 let title = games[i]['title'];
                 let num_person = games[i]['num_person'];
@@ -98,31 +185,37 @@ function gameKeywordFinder() {
                                     </ul>
                                 </div>
                               </div>`;
-                    $("#cardHolder2").append(temp_html);
-                }
-                const newRoot = document.querySelector("#result");
-                const resultCheck = document.querySelectorAll("#newCard");
-                if (resultCheck.length != 0) {
-                    newRoot.innerHTML = `<h4>선택하신 다음 기준</h4>
-                                         <div class="selected-items"></div>
-                                         <h4>해당하는 보드게임 <b>${resultCheck.length}개</b>를 찾았어요!</h4>`;
-                    let temp_html2 = ``;
-                    for (let k = 0; k < active_elements.length; k++) {
-                        temp_html2 += `<a class="select-btn btn-selected">${active_elements[k].innerHTML}</a>`;
-                    }
-                    $(".selected-items").append(temp_html2);
-                    $(".result").show();
-                    $(".section-array").show();
-                } else {
-                    newRoot.innerHTML = `<div class="not-found"><h4>선택하신 기준에 해당하는 게임이 없어요 :(</h4>
-                                         <h4>다른 키워드로 검색해보세요!</h4>
-                                         <a href="#section-2" id="re-search">다시 검색</a></div>`
-                    $(".section-array").hide();
+                    let temp_arr = {key: j, title: title, play_time: play_time.slice(0, -1), t_html: temp_html}
+                    cards_arr.push(temp_arr);
                 }
             }
         },
     });
 }
+$('#title_arr').click(function () { //제목 ㄱㄴㄷ순 정렬
+    keywordSort();
+    var result;
+    result = cards_arr.sort(function (a, b) {
+        return a.title < b.title ? -1 : a.title > b.title ? 1 : 0
+    });
+    console.log(result);
+    for (let i = 0; i < result.length; i++) {
+        $("#cardHolder2").append(result[i].t_html);
+    }
+    cards_arr = [];
+});
+$('#time_arr').click(function () { //플탐순 정렬
+    keywordSort();
+    var result;
+    result = cards_arr.sort(function (a, b) {
+        return a.play_time - b.play_time //작은 순 정렬
+    });
+    console.log(result);
+    for (let i = 0; i < result.length; i++) {
+        $("#cardHolder2").append(result[i].t_html);
+    }
+    cards_arr = [];
+});
 
 //찾아주세요! 버튼 함수 (아무것도 누르지 않았을때, 결과페이지에 누른 버튼 삽입)
 function btn_next() {
@@ -157,12 +250,13 @@ function gameTextFinder() {
         success: function (response) {
             let games = response['all_games'];
             for (let i = 0; i < games.length; i++) {
-                let title = games[i]['title'];
                 let num_person = games[i]['num_person'];
                 let play_time = games[i]['play_time'];
                 let img = games[i]['img'];
                 let category = games[i]['category'];
                 let when = games[i]['when'];
+                let title = games[i]['title'];
+                let rb_img = games[i]['RB_img']
                 let temp_html = ``;
 
                 const searchBtn = $("input.search-input");
@@ -171,19 +265,17 @@ function gameTextFinder() {
                 if (text_length <= title_length && text_length != 0) {
                     if (newValue.substr(0, text_length) === title.substr(0, text_length)) {
                         value_cnt++;
-                        temp_html = `<div class="col">
-                            <div class="card h-100">
-                                <img src="${img}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="game-title">${title}</h5>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">장르 : ${category}</li>
-                                    <li class="list-group-item">권장 인원수 : ${num_person}</li>
-                                    <li class="list-group-item">플레이 시간 : ${play_time}</li>
-                                </ul>
-                            </div>
-                          </div>`;
+                        temp_html = `<div class="card text-result">
+                                    <div class="card-body">
+                                      <div class="card-top"> 
+                                         <img src="${rb_img}" class="card-img-top" alt="...">
+                                       </div>
+                                       
+                                       <div class="card-bottom"> 
+                                          <h5 class="game-title">${title}</h5>
+                                       </div>
+                                    </div>
+                                  </div>`;
                     }
                 }
                 $("#cardHolder1").append(temp_html);
@@ -209,7 +301,6 @@ var ref = [];
             var temp_arr = {key: i, name: games[i]['title']};
             ref.push(temp_arr);
           }
-          console.log(ref);
         },
     });
 
@@ -222,7 +313,6 @@ $('.search-input').keyup(function(){
       $('#autoMaker').hide();
       ref.forEach(function(arg){
           if(arg.name.indexOf(txt) > -1 ){
-              console.log('얍얍');
               $('#autoMaker').append(
                   $('<div class="hint">').text(arg.name).attr({'key':arg.key})
               );
@@ -270,29 +360,28 @@ window.onload = function () {
         data: {},
         success: function (response) {
             let games = response['all_games'];
-            let ran = selectIndex(games.length - 1, 3)
-            for (let i = 0; i < 3; i++) {
+            let ran = selectIndex(games.length - 1, 5)
+            for (let i = 0; i < 5; i++) {
                 let title = games[ran[i]]['title'];
                 let num_person = games[ran[i]]['num_person'];
                 let play_time = games[ran[i]]['play_time'];
                 let img = games[ran[i]]['img'];
+                let rb_img = games[ran[i]]['RB_img'];
                 let category = games[ran[i]]['category'];
                 let when = games[ran[i]]['when'];
-                console.log('title');
-                let temp_html = `<div class="col">
-                                      <div class="card h-100">
-                                        <img src="${img}" class="card-img-top" alt="...">
-                                        <div class="card-body">
+                let temp_html = `<div class="card">
+                                    <div class="card-body">
+                                      <div class="card-top"> 
+                                         <img src="${rb_img}" class="card-img-top" alt="...">
+                                       </div>
+                                       
+                                       <div class="card-bottom"> 
                                           <h5 class="game-title">${title}</h5>
-                                        </div>
-                                        <ul class="list-group list-group-flush">
-                                          <li class="list-group-item">카테고리 : ${category}</li>
-                                          <li class="list-group-item">권장 인원수 : ${num_person}</li>
-                                          <li class="list-group-item">플레이 시간 : ${play_time}</li>
-                                          </ul>
-                                        </div>
-                                 </div>`;
-                let root = document.querySelector("#random-game");
+                                       </div>
+                                    </div>
+                                  </div>
+                                 `;
+                let root = document.querySelector("#recommend");
                 root.innerHTML += temp_html;
             }
         }
@@ -306,12 +395,13 @@ $("button.dark-mode-btn").click(function () {
   if (isBright === true) {
     isBright = false;
     darkModeBtn.innerHTML = "bright";
-    $("body").css("background-color", "#564a4a");
+    $("body").css("background-color", "var(--main-dark-color)");
     $("body").css("color", "#fff");
     $(".logo h2:first-child").css("color", "seashell");
     $("h5.game-title").css("color", "#000");
     $(".dark-mode-btn").css("background-color", "seashell");
     $(".dark-mode-btn").css("color", "#000");
+    $('.modal_content').css('color', '#000');
   } else {
     isBright = true;
     darkModeBtn.innerHTML = "dark";
@@ -323,57 +413,124 @@ $("button.dark-mode-btn").click(function () {
   }
 });
 
-//세부 정보 표출
-$(".col").click(() => {
-  $(".content-box").empty();
-  let temp_html = `
-  <div id="wrapper" class="content-box">
-    <div class="content-inner">
-        <div class="content-left">
-          <div class="content-left__img"><img src="../static/images/1루미1.png"></div>
-        </div>
+// 모달창 생성
+$(document).on('click',".card",function (event){
+    $(".modal_content").empty();
+    let target_path_1 = $(this)[0]
+    let target_path_2 = target_path_1.querySelector('.game-title').innerText
+    let target_path_3 = target_path_1.querySelector('img').attributes[0].value
 
-        <div class="content-right">
-          <div class="content-info">
-            <div class="info-top">
-              <span class='contnet-top__close'><img src="../static/images/close-btn.png"></span>
+    $.ajax({
+      type: "GET",
+      url: "/search",
+      data: {},
+      success: function (response) {
+            let games = response['all_games']
+          console.log(games)
+           for (let i=0; i<games.length; i++) {
+               let rb_img = games[i]['RB_img']
+               let rb_category = games[i]['category']
+               let rb_desc = games[i]['desc']
+               let rb_person = games[i]['num_person']
+               let rb_playtime = games[i]['play_time']
+               let rb_title = games[i]['title']
+               let rb_when = games[i]['when']
+               let rb_yt_link = games[i]['youtube_link']
+               let rb_yt_title = games[i]['youtube_titlle']
+
+
+
+               if(target_path_2 === rb_title) {
+                   let desc_1 = rb_desc.substr(0,26)
+                   let desc_2 = rb_desc.substr(26)
+                   let yt_title_1 = rb_yt_title.substr(0,26)
+                   let yt_title_2 = rb_yt_title.substr(26)
+
+                    let temp_html = `
+      <div id="wrapper" class="content-box">
+        <div class="content-inner">
+            <div class="content-left">
+              <div class="content-left__img"><img src="${rb_img}"></div>
             </div>
-            <div class ="info-content">
-              <span class="content-top__title">루미큐브</span>
-            </div>
-            <div class="info-content">
-              <div class="info-content__detail">
-                <p>남녀노소 누구나 사랑하는 타일조합 손털기 게임! <br> 
-                세계인의 게임 루미큐브!</p>
+    
+            <div class="content-right">
+              <div class="content-info">
+                <div class="info-top">
+                  <span class='content-top__close'><img src="../static/images/close-btn.png"></span>
+                </div>
+                <div class ="info-content">
+                  <span class="content-top__title">${rb_title}</span>
+                </div>
+                <div class="info-content">
+                  <div class="info-content__detail">
+                    <p>${desc_1}<br>${desc_2} 
+                    </p>
+                  </div>
+                </div>
+                <div class="info-content">
+                  <span class="content-rule">
+                    <b>난이도</b> Normal
+                  </span>
+                  <span class="content-rule">
+                    <b>인원</b> ${rb_person}
+                  </span>
+                  <span class="content-rule">
+                    <b>게임시간</b> ${rb_playtime}
+                  </span>
+                </div>
+                <div class="info-content">
+                  <a href="${rb_yt_link}" target="_blank" class="content_url"><b>게임영상</b>: ${yt_title_1}<br>${yt_title_2}</a>
+                </div>
               </div>
             </div>
-            <div class="info-content">
-              <span class="content-rule">
-                <b>난이도</b> Normal
-              </span>
-              <span class="content-rule">
-                <b>인원</b> 2-4인
-              </span>
-              <span class="content-rule">
-                <b>게임시간</b> 30분
-              </span>
-            </div>
-            <div class="info-content">
-              <a href="https://www.naver.com/" target="_blank" class="content_url">관련영상</a>
-            </div>
-          </div>
         </div>
-    </div>
-  </div>
-  `;
-  $(".modal_content").append(temp_html);
-});
+      </div>
+      `;
+      $(".modal_content").append(temp_html);
+            } else if (target_path_3 == 'undefined') {
+                 $('.modal').fadeOut()
+               }
 
-$(function () {
-  $(".col").click(function () {
-    $(".modal").fadeIn();
-  });
-  $(".modal_content").click(function () {
-    $(".modal").fadeOut();
-  });
-});
+           }
+
+    }
+  })
+    $('.modal').fadeIn()
+})
+$(document).on('click',".content-top__close",function (event){
+    $('.modal').fadeOut()
+})
+
+// 전체 게임 보여주기
+$(document).ready(function () {
+    console.log('loaded')
+    $.ajax({
+        type: "GET",
+        url: "/search",
+        data: {},
+        success: function (response) {
+            let all_games = response['all_games']
+            for(let i=0; i<all_games.length; i++){
+                let title = all_games[i]['title'];
+                let rb_img = all_games[i]['RB_img']
+                let temp_html= `
+                <div class="card all-games">
+                                    <div class="card-body">
+                                      <div class="card-top"> 
+                                         <img src="${rb_img}" class="card-img-top" alt="...">
+                                       </div>
+                                       
+                                       <div class="card-bottom"> 
+                                          <h5 class="game-title">${title}</h5>
+                                       </div>
+                                    </div>
+                                  </div>
+                `
+                $('#cardHolder3').append(temp_html)
+            }
+
+            console.log(all_games)
+
+        }
+    })
+})

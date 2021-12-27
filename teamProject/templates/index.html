@@ -137,26 +137,35 @@
 <!-- 검색 결과 페이지 -->
 <div class="container result" id="result"></div>
 
-<!-- 정렬 기능 섹션 -->
-<div class="container">
+<!-- 검색 결과 카드 홀더 섹션 -->
+<div class="container result" id="array">
+    <!-- 정렬 기능 섹션 -->
     <div class="section-array">
         <div class="array-button-holder">
-            <button>인기순</button>
-            <button>제목순</button>
-            <button>플레이시간순</button>
+            <button id="title_arr">제목순</button>
+            <button id="time_arr">플레이시간순</button>
         </div>
     </div>
-</div>
 
-<!-- 검색 결과 카드 홀더 섹션 -->
-<div class="container result" >
-  <div class="card-container" id="cardHolder2"></div>
+    <div class="card-container" id="cardHolder2"></div>
 </div>
 
 <!-- 소개 페이지 -->
 <div class="section" id="section-4">
     <div class="container">
         <h2>ABOUT US</h2>
+        <span>
+            <table>
+            <tbody class="intro-body">
+                <tr><td class='intro-img' rowspan="4"><img height="100px" src="../static/images/info.jpg"/></td><td></td><td>이름</td><td>우종원</td></tr>
+                <tr><td></td><td>자기소개</td><td>팀내 하와이안피자 담당</td></tr>
+                <tr><td></td><td>깃헙 주소</td><td>https://github.com/Ubermensch0608</td></tr>
+                <tr><td></td><td>블로그 주소</td><td>https://velog.io/@ubermensch0608</td></tr>
+            </tbody>
+            </table>
+        </span>
+
+
         <p>주사위 굴려조 팀을 후원해주세요!</p>
         <p>신한 123-456-789</p>
     </div>

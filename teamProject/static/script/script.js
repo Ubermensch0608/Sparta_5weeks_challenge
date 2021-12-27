@@ -365,8 +365,8 @@ window.onload = function () {
         data: {},
         success: function (response) {
             let games = response['all_games'];
-            let ran = selectIndex(games.length - 1, 5)
-            for (let i = 0; i < 5; i++) {
+            let ran = selectIndex(games.length - 1, 3)
+            for (let i = 0; i < 3; i++) {
                 let title = games[ran[i]]['title'];
                 let num_person = games[ran[i]]['num_person'];
                 let play_time = games[ran[i]]['play_time'];
@@ -400,7 +400,7 @@ $("button.dark-mode-btn").click(function () {
     if (isBright === true) {
         isBright = false;
         darkModeBtn.innerHTML = "bright";
-        $("body").css("background-color", "var(--main-dark-color)");
+        $("body").css("background-color", "#282828");
         $("body").css("color", "#fff");
         $(".logo h2:first-child").css("color", "seashell");
         $("h5.game-title").css("color", "#000");
@@ -451,7 +451,7 @@ $(document).on('click', ".card", function (event) {
                     let yt_title_2 = rb_yt_title.substr(26)
 
                     let temp_html = `
-      <div id="wrapper" class="content-box">
+      
         <div class="content-inner">
             <div class="content-left">
               <div class="content-left__img"><img src="${rb_img}"></div>
@@ -465,13 +465,7 @@ $(document).on('click', ".card", function (event) {
                 <div class ="info-content">
                   <span class="content-top__title">${rb_title}</span>
                 </div>
-                <div class="info-content">
-                  <div class="info-content__detail">
-                    <p>${desc_1}<br>${desc_2} 
-                    </p>
-                  </div>
-                </div>
-                <div class="info-content">
+                 <div class="info-content">
                   <span class="content-rule">
                     <b>난이도</b> Normal
                   </span>
@@ -483,12 +477,19 @@ $(document).on('click', ".card", function (event) {
                   </span>
                 </div>
                 <div class="info-content">
-                  <a href="${rb_yt_link}" target="_blank" class="content_url"><b>게임영상</b>: ${yt_title_1}<br>${yt_title_2}</a>
+                  <div class="info-content__detail">
+                    <p>${desc_1}<br>${desc_2} 
+                    </p>
+                  </div>
+                </div>
+             
+                <div class="info-content">
+                  <a href="${rb_yt_link}" target="_blank" class="content_url"><b>게임 소개 영상</b></a>
                 </div>
               </div>
             </div>
         </div>
-      </div>
+      
       `;
                     $(".modal_content").append(temp_html);
                 } else if (target_path_3 == 'undefined') {
@@ -545,6 +546,8 @@ $(document).on('click', ".show-all", function (event) {
         $('.show-all')[0].innerText = '접어두기'
         $('#cardHolder3-hide').show()
         $('#cardHolder3-hide').css('display', 'grid')
+        $('#cardHolder3-hide').css('width', 200)
+          $('#cardHolder3-hide').css('grid-template-columns','repeat(3, 1fr)');
     } else if (innerText === '접어두기') {
         $('.show-all')[0].innerText = '모든 게임 보기'
         $('#cardHolder3-hide').hide()

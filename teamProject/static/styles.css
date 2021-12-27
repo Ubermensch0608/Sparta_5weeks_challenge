@@ -43,14 +43,23 @@ a {
   text-decoration: none !important;
   color: var(--main-dark-color) !important;
 }
-h2 {
+.section-title{
   text-align: left;
 }
 .cards {
   padding: 13px !important;
   margin-top: 13px !important;
 }
-
+#main-body{
+  margin-top: 120px;
+  margin-bottom: 0;
+}
+/* 메인 상단 네비게이션 섹션 */
+.main-top-navi{
+  display: inline-flex;
+  text-align: left;
+  width: 100%;
+}
 /* 텍스트 검색 인풋 박스 */
 .logo {
   margin: 60px;
@@ -68,28 +77,26 @@ h2 {
 }
 .search-box {
   margin: auto;
-  width: 90%;
-  max-width: 700px;
+  max-width: 500px;
+  display: flex;
+  left: 500px
 }
 .search-input {
-  width: 100%;
-  height: 50px;
-  padding-left: 50px;
+  width: 200px;
+  height: 30px;
+  padding-left: 20px;
   border-radius: 25px;
-  padding-top: 5px;
+  padding-top: 2px;
 }
 
-.search-box {
-  position: relative;
-}
 .text-search-btn {
   position: absolute;
   top: 50%;
   right: 2%;
   transform: translate(0, -50%);
   z-index: 1;
-  width: 40px;
-  height: 40px;
+  width: 15%;
+  height: 80%;
   border: none;
   background-color: rgba(0, 0, 0, 0);
 }
@@ -104,57 +111,64 @@ h2 {
   font-style: normal;
   color: var(--main-green-color);
 }
-
+/*  다크모드 */
+#dark {
+  text-align: left;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+.dark-mode {
+  text-align: left;
+  display: inline-block;
+}
+.dark-mode-btn {
+  border: none;
+  border-radius: 15px;
+  padding: 2px;
+  margin: 20px;
+  background-color: var(--main-dark-color);
+  color: #fff;
+  width: 70px;
+  display: inline-block;
+}
 /* 텍스트 검색 결과 섹션*/
 .text-result-section {
   margin-top: 70px;
   display: none;
+  max-width: 100%
 }
-.text-result-section > .cards {
-  width: 100%;
-}
-.result-h2-holder {
-  background-color: seashell;
-}
-
 .text-result-section h2 {
-  margin-bottom: 60px;
+  margin-bottom: 30px;
+}
+.text-result{
+  max-width: 25%;
 }
 
 /* 추천 게임 섹션 */
+.card-container{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+  margin-top: 20px;
+}
 .recommend-box {
-  margin-top: 80px;
-  text-align: left;
+  margin-top: 30px;
+  margin-bottom: 100px;
 }
 .recommend-box h2 {
   margin-bottom: 30px;
-  width: fit-content;
 }
-.cards {
-  width: 70%;
-  margin: auto;
+.card-bottom {
+  margin-top: 10px;
 }
-
-.card {
-  text-align: left;
-  border: 1px solid #000 !important;
-  border-radius: 15px !important;
-  overflow: hidden;
+.game-title{
+  margin: 0;
+  font-size: 1.4em;
+  font-weight: bold;
 }
 .card:hover {
   transition: 250ms;
   transform: scale(1.05);
-}
-.card-img-top{
-  max-width: 90%;
-  max-height: 90%;
-}
-.game-title {
-  margin: 0;
-  font-weight: 800;
-}
-.col ul li {
-  font-size: 12px;
 }
 
 /* 키워드 검색페이지 */
@@ -234,7 +248,9 @@ h2 {
 }
 
 /* 키워드 검색 결과 페이지 */
-
+#cardHolder2{
+  display: none;
+}
 .result {
   display: none;
   /* border: 1px solid #fff; */
@@ -274,7 +290,7 @@ h2 {
   width: 90%;
 }
 .array-button-holder {
-  width: 90%;
+  width: 100%;
   background-color: var(--main-green-color);
   border-radius: 30px !important;
   margin-bottom: 20px;
@@ -353,25 +369,9 @@ ul#menu {
 .hide-nav {
   display: none;
 }
-/*  다크모드 */
-#dark {
-  text-align: left;
+.background-white{
+  background-color: #4aa96c;
 }
-.dark-mode {
-  text-align: left;
-  display: inline-block;
-}
-.dark-mode-btn {
-  border: none;
-  border-radius: 15px;
-  padding: 2px;
-  margin: 20px;
-  background-color: var(--main-dark-color);
-  color: #fff;
-  width: 70px;
-  display: inline-block;
-}
-
 /* 모달창 */
 .modal {
   width: 100%;
@@ -388,7 +388,6 @@ ul#menu {
   left: 20%;
   width: 60%;
   height: 60%;
-  overflow: auto;
   border-radius: 10px;
   background-color: seashell;
   text-align: center;
@@ -398,18 +397,28 @@ ul#menu {
 .content-box {
 }
 .content-inner {
-  display: inline-flex;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr)
+
 }
 .content-left {
+  grid-column: 1/2;
+  grid-row: 1/6;
   margin: 2em;
-  position: relative;
-  max-width: 350px;
+  max-width: 100%;
+  vertical-align: middle;
 }
-.content-left__img img{
+.content-left__img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+.content-left img{
   max-width: 100%;
 }
 .content-right {
   margin: 2em 2em 2em 0;
+ max-width: 100%;
 }
 .content-info {
   text-align: left;
@@ -417,6 +426,8 @@ ul#menu {
 .info-top {
   margin-bottom: 2em;
   text-align: right;
+  grid-column: 2/3;
+  grid-row: -6/-5;
 }
 .info-content {
   max-font-size: 1.6em;
@@ -437,6 +448,23 @@ ul#menu {
   font-size: 1.6em;
 }
 
+/* 모든 카드 보여주기 */
+#cardHolder3 {
+  margin-top: 50px;
+}
+#cardHolder3-hide{
+  display: none;
+}
+.show-all{
+  border: none;
+  border-radius: 30px;
+  background-color: #4aa96c;
+  color: #fff;
+  width: 90%;
+  font-size: 20px;
+  padding: 15px;
+  margin-top: 40px;
+}
 /* 모바일사이즈 */
 @media only handheld and (min-width: 400px) {
   * {
@@ -448,9 +476,6 @@ ul#menu {
   .col:first-child,
   .col:last-child {
     display: none;
-  }
-  #section-1 {
-    max-height: 500px;
   }
   .card {
     width: 250px;

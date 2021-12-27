@@ -12,7 +12,7 @@ $("#menu > li a:nth-child(2)").mouseleave(function () {
     $(this).siblings().addClass('hide-nav');
 });
 
-// 키워드 버튼 함수
+// 키워드 페이지 버튼 함수
 $("#number .select-btn").click(function () {
     $("#number .select-btn").not(this).removeClass("btn-clicked");
     $(this).toggleClass("btn-clicked");
@@ -29,7 +29,8 @@ $("#genre .select-btn").click(function () {
 var keywords = [
     2, 3, 4, 5, 6, 7,
     '친구와 함께', '연인과 함께', '가족과 함께', '아이스브레이킹',
-    '추리', '카드', '전략', '가족', '역동적'];
+    '추리', '카드', '전략', '가족', '역동적'
+];
 
 //인원 수 검색에서 range를 array로 만드는 함수
 function range(start, end) {
@@ -40,30 +41,32 @@ function range(start, end) {
     return ans;
 }
 
+// 키워드 검색 버튼 함수
 function gameKeywordFinder() {
+
     const clicked_keys = [];
     $('.btn-clicked').each(function () { //사용자가 클릭한 버튼의 id값 가져오기
         clicked_keys.push($(this).attr('id'));
     });
     $("#cardHolder2").empty();
+
     $.ajax({
         type: "GET",
         url: "/search",
         data: {},
         success: function (response) {
-            let games = response['all_games'];
+                    let games = response['all_games'];
             for (let i = 0; i < games.length; i++) {
                 let title = games[i]['title'];
                 let num_person = games[i]['num_person'];
                 let start = Number(num_person.charAt(0));
                 let end = Number(num_person.charAt(num_person.length - 1));
-
                 let person_arr = range(start, end);
                 let play_time = games[i]['play_time'];
                 let img = games[i]['img'];
                 let category = games[i]['category'];
                 let when = games[i]['when'];
-
+                let rb_img = games[i]['RB_img']
                 let temp_html = ``;
                 let j, cnt = 0;
                 for (j = 0; j < clicked_keys.length; j++) {
@@ -85,19 +88,17 @@ function gameKeywordFinder() {
                     }
                 }
                 if (cnt === clicked_keys.length && title !== undefined) {
-                    temp_html = `<div class="col" id="newCard">
-                                 <div class="card h-100">
-                                    <img src="${img}" class="card-img-top" alt="...">
+                    temp_html = `<div class="card keyword-result" id="newCard">
                                     <div class="card-body">
-                                        <h5 class="game-title">${title}</h5>
+                                      <div class="card-top"> 
+                                         <img src="${rb_img}" class="card-img-top" alt="...">
+                                       </div>
+                                       
+                                       <div class="card-bottom"> 
+                                          <h5 class="game-title">${title}</h5>
+                                       </div>
                                     </div>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">카테고리 : ${category}</li>
-                                        <li class="list-group-item">권장 인원수 : ${num_person}</li>
-                                        <li class="list-group-item">플레이 시간 : ${play_time}</li>
-                                    </ul>
-                                </div>
-                              </div>`;
+                                  </div>`;
                     $("#cardHolder2").append(temp_html);
                 }
                 const newRoot = document.querySelector("#result");
@@ -124,11 +125,108 @@ function gameKeywordFinder() {
     });
 }
 
+// 카드 정렬
+let cards_arr = [];
+
+function keywordSort() {
+    const clicked_keys = [];
+    $('.btn-clicked').each(function () { //사용자가 클릭한 버튼의 id값 가져오기
+        clicked_keys.push($(this).attr('id'));
+    });
+
+    $("#cardHolder2").empty();
+    $.ajax({
+        type: "GET",
+        url: "/search",
+        data: {},
+        success: function (response) {
+            let games = response['all_games'];
+            for (let i = 0; i < games.length; i++) {
+                let title = games[i]['title'];
+                let num_person = games[i]['num_person'];
+                let start = Number(num_person.charAt(0));
+                let end = Number(num_person.charAt(num_person.length - 1));
+
+                let person_arr = range(start, end);
+                let play_time = games[i]['play_time'];
+                let img = games[i]['img'];
+                let category = games[i]['category'];
+                let when = games[i]['when'];
+                let rb_img = games[i]['RB_img'];
+
+                let temp_html = ``;
+                let j, cnt = 0;
+                for (j = 0; j < clicked_keys.length; j++) {
+                    let key = clicked_keys[j]
+                    if (key <= 6) {
+                        for (let n = 0; n < person_arr.length; n++) {
+                            if (keywords[key - 1] === person_arr[n]) {
+                                cnt++;
+                            }
+                        }
+                    } else if (key <= 10) {
+                        if (keywords[key - 1] === when) {
+                            cnt++;
+                        }
+                    } else {
+                        if (keywords[key - 1] === category) {
+                            cnt++;
+                        }
+                    }
+                }
+                if (cnt === clicked_keys.length && title !== undefined) {
+                    temp_html = `<div class="card keyword-result" id="newCard">
+                                    <div class="card-body">
+                                      <div class="card-top"> 
+                                         <img src="${rb_img}" class="card-img-top" alt="...">
+                                       </div>
+                                       
+                                       <div class="card-bottom"> 
+                                          <h5 class="game-title">${title}</h5>
+                                       </div>
+                                    </div>
+                                  </div>`;
+                    let temp_arr = {key: j, title: title, play_time: play_time.slice(0, -1), t_html: temp_html}
+                    cards_arr.push(temp_arr);
+                }
+            }
+        },
+    });
+}
+
+$('#title_arr').click(function () { //제목 ㄱㄴㄷ순 정렬
+    keywordSort();
+    var result;
+    result = cards_arr.sort(function (a, b) {
+        return a.title < b.title ? -1 : a.title > b.title ? 1 : 0
+    });
+    console.log(result);
+    for (let i = 0; i < result.length; i++) {
+        $("#cardHolder2").append(result[i].t_html);
+    }
+    cards_arr = [];
+});
+$('#time_arr').click(function () { //플탐순 정렬
+    keywordSort();
+    var result;
+    result = cards_arr.sort(function (a, b) {
+        return a.play_time - b.play_time //작은 순 정렬
+    });
+    console.log(result);
+    for (let i = 0; i < result.length; i++) {
+        $("#cardHolder2").append(result[i].t_html);
+    }
+    cards_arr = [];
+});
+
 //찾아주세요! 버튼 함수 (아무것도 누르지 않았을때, 결과페이지에 누른 버튼 삽입)
+//찾아주세요! 버튼 함수 (아무것도 누르지 않았을때 alert, 결과페이지에 누른 버튼 삽입)
 function btn_next() {
     $(".selected-items").empty();
+    $('#cardHolder2').css('display','grid')
     var k_str = "";
     active_elements = document.getElementsByClassName('btn-clicked');
+    console.log(active_elements);
     k_str = "";
     for (var i = 0; i < active_elements.length; i++) {
         if (k_str == "")
@@ -136,6 +234,7 @@ function btn_next() {
         else
             k_str = k_str + "," + active_elements[i].innerHTML;
     }
+    console.log(k_str);
     if (k_str == "") {
         alert('1개 이상의 키워드를 선택해 주세요!')
     } else {
@@ -157,12 +256,13 @@ function gameTextFinder() {
         success: function (response) {
             let games = response['all_games'];
             for (let i = 0; i < games.length; i++) {
-                let title = games[i]['title'];
                 let num_person = games[i]['num_person'];
                 let play_time = games[i]['play_time'];
                 let img = games[i]['img'];
                 let category = games[i]['category'];
                 let when = games[i]['when'];
+                let title = games[i]['title'];
+                let rb_img = games[i]['RB_img']
                 let temp_html = ``;
 
                 const searchBtn = $("input.search-input");
@@ -171,19 +271,17 @@ function gameTextFinder() {
                 if (text_length <= title_length && text_length != 0) {
                     if (newValue.substr(0, text_length) === title.substr(0, text_length)) {
                         value_cnt++;
-                        temp_html = `<div class="col">
-                            <div class="card h-100">
-                                <img src="${img}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="game-title">${title}</h5>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">장르 : ${category}</li>
-                                    <li class="list-group-item">권장 인원수 : ${num_person}</li>
-                                    <li class="list-group-item">플레이 시간 : ${play_time}</li>
-                                </ul>
-                            </div>
-                          </div>`;
+                        temp_html = `<div class="card text-result">
+                                    <div class="card-body">
+                                      <div class="card-top"> 
+                                         <img src="${rb_img}" class="card-img-top" alt="...">
+                                       </div>
+                                       
+                                       <div class="card-bottom"> 
+                                          <h5 class="game-title">${title}</h5>
+                                       </div>
+                                    </div>
+                                  </div>`;
                     }
                 }
                 $("#cardHolder1").append(temp_html);
@@ -199,51 +297,51 @@ function gameTextFinder() {
 // 자동완성 배열 만들기
 var ref = [];
 
-    $.ajax({
-        type: "GET",
-        url: "/search",
-        data: {},
-        success: function (response) {
-          let games = response['all_games'];
-          for (let i = 0; i < games.length; i++) {
+$.ajax({
+    type: "GET",
+    url: "/search",
+    data: {},
+    success: function (response) {
+        let games = response['all_games'];
+        for (let i = 0; i < games.length; i++) {
             var temp_arr = {key: i, name: games[i]['title']};
             ref.push(temp_arr);
-          }
-        },
-    });
+        }
+    },
+});
 
 // 자동완성 함수
 var isComplete = false;  //autoMaker 자식이 선택 되었는지 여부
-$('.search-input').keyup(function(){
-  var txt = $(this).val();
-  if(txt != ''){  //빈줄이 들어오면
-      $('#autoMaker').children().remove();
-      $('#autoMaker').hide();
-      ref.forEach(function(arg){
-          if(arg.name.indexOf(txt) > -1 ){
-              $('#autoMaker').append(
-                  $('<div class="hint">').text(arg.name).attr({'key':arg.key})
-              );
-              $("#autoMaker").show();
-          }
-      });
-      $('#autoMaker').children().each(function(){
-          $(this).click(function(){
-              $('.search-input').val($(this).text());
-              $('#insert_target').val("key : "+$(this).attr('key')+ ", data : " + $(this).text());
-              isComplete = true;
-          });
-      });
-  } else {
-      $('#autoMaker').children().remove();
-      $("#autoMaker").hide();
-  }
+$('.search-input').keyup(function () {
+    var txt = $(this).val();
+    if (txt != '') {  //빈줄이 들어오면
+        $('#autoMaker').children().remove();
+        $('#autoMaker').hide();
+        ref.forEach(function (arg) {
+            if (arg.name.indexOf(txt) > -1) {
+                $('#autoMaker').append(
+                    $('<div class="hint">').text(arg.name).attr({'key': arg.key})
+                );
+                $("#autoMaker").show();
+            }
+        });
+        $('#autoMaker').children().each(function () {
+            $(this).click(function () {
+                $('.search-input').val($(this).text());
+                $('#insert_target').val("key : " + $(this).attr('key') + ", data : " + $(this).text());
+                isComplete = true;
+            });
+        });
+    } else {
+        $('#autoMaker').children().remove();
+        $("#autoMaker").hide();
+    }
 });
-$('.search-input').keydown(function(event){
-  if(isComplete) {  //autoMaker 자식이 선택 되었으면 초기화
-      $('#insert_target').val('')
-      $("#autoMaker").hide();
-  }
+$('.search-input').keydown(function (event) {
+    if (isComplete) {  //autoMaker 자식이 선택 되었으면 초기화
+        $('#insert_target').val('')
+        $("#autoMaker").hide();
+    }
 })
 
 
@@ -260,7 +358,6 @@ const selectIndex = (totalIndex, selectingNumber) => {
     }
     return randomIndexArray;
 }
-
 window.onload = function () {
     $.ajax({
         type: "GET",
@@ -268,8 +365,8 @@ window.onload = function () {
         data: {},
         success: function (response) {
             let games = response['all_games'];
-            let ran = selectIndex(games.length - 1, 3)
-            for (let i = 0; i < 3; i++) {
+            let ran = selectIndex(games.length - 1, 5)
+            for (let i = 0; i < 5; i++) {
                 let title = games[ran[i]]['title'];
                 let num_person = games[ran[i]]['num_person'];
                 let play_time = games[ran[i]]['play_time'];
@@ -277,20 +374,19 @@ window.onload = function () {
                 let rb_img = games[ran[i]]['RB_img'];
                 let category = games[ran[i]]['category'];
                 let when = games[ran[i]]['when'];
-                let temp_html = `<div class="col">
-                                      <div class="card h-100">
-                                        <img src="${rb_img}" class="card-img-top" alt="...">
-                                        <div class="card-body">
+                let temp_html = `<div class="card">
+                                    <div class="card-body">
+                                      <div class="card-top"> 
+                                         <img src="${rb_img}" class="card-img-top" alt="...">
+                                       </div>
+                                       
+                                       <div class="card-bottom"> 
                                           <h5 class="game-title">${title}</h5>
-                                        </div>
-                                        <ul class="list-group list-group-flush">
-                                          <li class="list-group-item">카테고리 : ${category}</li>
-                                          <li class="list-group-item">권장 인원수 : ${num_person}</li>
-                                          <li class="list-group-item">플레이 시간 : ${play_time}</li>
-                                          </ul>
-                                        </div>
-                                 </div>`;
-                let root = document.querySelector("#random-game");
+                                       </div>
+                                    </div>
+                                  </div>
+                                 `;
+                let root = document.querySelector("#recommend");
                 root.innerHTML += temp_html;
             }
         }
@@ -301,65 +397,58 @@ window.onload = function () {
 let isBright = true;
 const darkModeBtn = document.querySelector(".dark-mode-btn");
 $("button.dark-mode-btn").click(function () {
-  if (isBright === true) {
-    isBright = false;
-    darkModeBtn.innerHTML = "bright";
-    $("body").css("background-color", "#564a4a");
-    $("body").css("color", "#fff");
-    $(".logo h2:first-child").css("color", "seashell");
-    $("h5.game-title").css("color", "#000");
-    $(".dark-mode-btn").css("background-color", "seashell");
-    $(".dark-mode-btn").css("color", "#000");
-    $('.modal_content').css('color', '#000');
-  } else {
-    isBright = true;
-    darkModeBtn.innerHTML = "dark";
-    $("body").removeAttr("style");
-    $(".logo h2:first-child").removeAttr("style");
-    $("#search h5").removeAttr("style");
-    $(".dark-mode-btn").removeAttr("style");
-    $(".dark-mode-btn").removeAttr("style");
-  }
-});
-
-//세부 정보 표출
-
-$(".card").click(() => {
-
+    if (isBright === true) {
+        isBright = false;
+        darkModeBtn.innerHTML = "bright";
+        $("body").css("background-color", "var(--main-dark-color)");
+        $("body").css("color", "#fff");
+        $(".logo h2:first-child").css("color", "seashell");
+        $("h5.game-title").css("color", "#000");
+        $(".dark-mode-btn").css("background-color", "seashell");
+        $(".dark-mode-btn").css("color", "#000");
+        $('.modal_content').css('color', '#000');
+    } else {
+        isBright = true;
+        darkModeBtn.innerHTML = "dark";
+        $("body").removeAttr("style");
+        $(".logo h2:first-child").removeAttr("style");
+        $("#search h5").removeAttr("style");
+        $(".dark-mode-btn").removeAttr("style");
+        $(".dark-mode-btn").removeAttr("style");
+    }
 });
 
 // 모달창 생성
-$(document).on('click',".card",function (event){
+$(document).on('click', ".card", function (event) {
     $(".modal_content").empty();
     let target_path_1 = $(this)[0]
     let target_path_2 = target_path_1.querySelector('.game-title').innerText
     let target_path_3 = target_path_1.querySelector('img').attributes[0].value
 
     $.ajax({
-      type: "GET",
-      url: "/search",
-      data: {},
-      success: function (response) {
+        type: "GET",
+        url: "/search",
+        data: {},
+        success: function (response) {
             let games = response['all_games']
-          console.log(games)
-           for (let i=0; i<games.length; i++) {
-               let rb_img = games[i]['RB_img']
-               let rb_category = games[i]['category']
-               let rb_desc = games[i]['desc']
-               let rb_person = games[i]['num_person']
-               let rb_playtime = games[i]['play_time']
-               let rb_title = games[i]['title']
-               let rb_when = games[i]['when']
-               let rb_yt_link = games[i]['youtube_link']
-               let rb_yt_title = games[i]['youtube_titlle']
+            console.log(games)
+            for (let i = 0; i < games.length; i++) {
+                let rb_img = games[i]['RB_img']
+                let rb_category = games[i]['category']
+                let rb_desc = games[i]['desc']
+                let rb_person = games[i]['num_person']
+                let rb_playtime = games[i]['play_time']
+                let rb_title = games[i]['title']
+                let rb_when = games[i]['when']
+                let rb_yt_link = games[i]['youtube_link']
+                let rb_yt_title = games[i]['youtube_titlle']
 
 
-
-               if(target_path_2 === rb_title) {
-                   let desc_1 = rb_desc.substr(0,26)
-                   let desc_2 = rb_desc.substr(26)
-                   let yt_title_1 = rb_yt_title.substr(0,26)
-                   let yt_title_2 = rb_yt_title.substr(26)
+                if (target_path_2 === rb_title) {
+                    let desc_1 = rb_desc.substr(0, 26)
+                    let desc_2 = rb_desc.substr(26)
+                    let yt_title_1 = rb_yt_title.substr(0, 26)
+                    let yt_title_2 = rb_yt_title.substr(26)
 
                     let temp_html = `
       <div id="wrapper" class="content-box">
@@ -394,24 +483,71 @@ $(document).on('click',".card",function (event){
                   </span>
                 </div>
                 <div class="info-content">
-                  <a href="${rb_yt_link}" target="_blank" class="content_url">${yt_title_1}<br>${yt_title_2}</a>
+                  <a href="${rb_yt_link}" target="_blank" class="content_url"><b>게임영상</b>: ${yt_title_1}<br>${yt_title_2}</a>
                 </div>
               </div>
             </div>
         </div>
       </div>
       `;
-      $(".modal_content").append(temp_html);
-            } else if (target_path_3 == 'undefined') {
-                 $('.modal').fadeOut()
-               }
+                    $(".modal_content").append(temp_html);
+                } else if (target_path_3 == 'undefined') {
+                    $('.modal').fadeOut()
+                }
 
-           }
+            }
 
-    }
-  })
+        }
+    })
     $('.modal').fadeIn()
 })
-$(document).on('click',".content-top__close",function (event){
+$(document).on('click', ".content-top__close", function (event) {
     $('.modal').fadeOut()
+})
+
+// 전체 게임 보여주기
+$(document).ready(function () {
+    $.ajax({
+        type: "GET",
+        url: "/search",
+        data: {},
+        success: function (response) {
+            let all_games = response['all_games']
+            for (let i = 0; i < all_games.length; i++) {
+                let title = all_games[i]['title'];
+                let rb_img = all_games[i]['RB_img']
+                let temp_html = `
+                <div class="card all-games">
+                                    <div class="card-body">
+                                      <div class="card-top"> 
+                                         <img src="${rb_img}" class="card-img-top" alt="...">
+                                       </div>
+                                       
+                                       <div class="card-bottom"> 
+                                          <h5 class="game-title">${title}</h5>
+                                       </div>
+                                    </div>
+                                  </div>
+                `
+                if (i < 10) {
+                    $('#cardHolder3').append(temp_html)
+                } else if (i >= 10) {
+                    $('#cardHolder3-hide').append(temp_html)
+                }
+            }
+        }
+    })
+})
+
+$(document).on('click', ".show-all", function (event) {
+    let innerText = $('.show-all')[0].innerText
+    if (innerText === '모든 게임 보기') {
+        $('.show-all')[0].innerText = '접어두기'
+        $('#cardHolder3-hide').show()
+        $('#cardHolder3-hide').css('display', 'grid')
+    } else if (innerText === '접어두기') {
+        $('.show-all')[0].innerText = '모든 게임 보기'
+        $('#cardHolder3-hide').hide()
+    }
+
 })

@@ -365,8 +365,8 @@ window.onload = function () {
         data: {},
         success: function (response) {
             let games = response['all_games'];
-            let ran = selectIndex(games.length - 1, 3)
-            for (let i = 0; i < 3; i++) {
+            let ran = selectIndex(games.length - 1, 4)
+            for (let i = 0; i < 4; i++) {
                 let title = games[ran[i]]['title'];
                 let num_person = games[ran[i]]['num_person'];
                 let play_time = games[ran[i]]['play_time'];
@@ -402,19 +402,26 @@ $("button.dark-mode-btn").click(function () {
         darkModeBtn.innerHTML = "bright";
         $("body").css("background-color", "#282828");
         $("body").css("color", "#fff");
-        $(".logo h2:first-child").css("color", "seashell");
+        $(".logo h1:first-child").css("color", "seashell");
         $("h5.game-title").css("color", "#000");
         $(".dark-mode-btn").css("background-color", "seashell");
         $(".dark-mode-btn").css("color", "#000");
         $('.modal_content').css('color', '#000');
+        $('.game-title').css("color", "#fff");
+        $('.member').css("color", "#000");
+        $('#section-4').css("background-color", "seagreen");
+        $('#autoMaker').css("color", "#000");
+
     } else {
         isBright = true;
         darkModeBtn.innerHTML = "dark";
         $("body").removeAttr("style");
-        $(".logo h2:first-child").removeAttr("style");
+        $(".logo h1:first-child").removeAttr("style");
         $("#search h5").removeAttr("style");
         $(".dark-mode-btn").removeAttr("style");
         $(".dark-mode-btn").removeAttr("style");
+        $('.game-title').css("color", "#000");
+        $('#section-4').css("background-color", "mediumseagreen");
     }
 });
 
@@ -478,13 +485,14 @@ $(document).on('click', ".card", function (event) {
                 </div>
                 <div class="info-content">
                   <div class="info-content__detail">
-                    <p>${desc_1}<br>${desc_2} 
+                    <p>${desc_1}${desc_2} 
                     </p>
                   </div>
                 </div>
              
                 <div class="info-content">
-                  <a href="${rb_yt_link}" target="_blank" class="content_url"><b>게임 소개 영상</b></a>
+                  <b>게임 소개 영상</b>
+                  <a href="${rb_yt_link}" target="_blank" class="content_url"><svg xmlns="http://www.w3.org/2000/svg" fill="tomato" width="24" height="24" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
                 </div>
               </div>
             </div>
@@ -504,53 +512,4 @@ $(document).on('click', ".card", function (event) {
 })
 $(document).on('click', ".content-top__close", function (event) {
     $('.modal').fadeOut()
-})
-
-// 전체 게임 보여주기
-$(document).ready(function () {
-    $.ajax({
-        type: "GET",
-        url: "/search",
-        data: {},
-        success: function (response) {
-            let all_games = response['all_games']
-            for (let i = 0; i < all_games.length; i++) {
-                let title = all_games[i]['title'];
-                let rb_img = all_games[i]['RB_img']
-                let temp_html = `
-                <div class="card all-games">
-                                    <div class="card-body">
-                                      <div class="card-top"> 
-                                         <img src="${rb_img}" class="card-img-top" alt="...">
-                                       </div>
-                                       
-                                       <div class="card-bottom"> 
-                                          <h5 class="game-title">${title}</h5>
-                                       </div>
-                                    </div>
-                                  </div>
-                `
-                if (i < 10) {
-                    $('#cardHolder3').append(temp_html)
-                } else if (i >= 10) {
-                    $('#cardHolder3-hide').append(temp_html)
-                }
-            }
-        }
-    })
-})
-
-$(document).on('click', ".show-all", function (event) {
-    let innerText = $('.show-all')[0].innerText
-    if (innerText === '모든 게임 보기') {
-        $('.show-all')[0].innerText = '접어두기'
-        $('#cardHolder3-hide').show()
-        $('#cardHolder3-hide').css('display', 'grid')
-        $('#cardHolder3-hide').css('width', 200)
-          $('#cardHolder3-hide').css('grid-template-columns','repeat(3, 1fr)');
-    } else if (innerText === '접어두기') {
-        $('.show-all')[0].innerText = '모든 게임 보기'
-        $('#cardHolder3-hide').hide()
-    }
-
 })

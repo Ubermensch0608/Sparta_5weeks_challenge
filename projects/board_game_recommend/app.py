@@ -1,6 +1,6 @@
-import app as app
 from pymongo import MongoClient
-
+from flask import Flask, render_template, jsonify, request
+app = Flask(__name__)
 client = MongoClient('mongodb://dice:dice4@15.164.214.224/', 27017)
 db = client.list_number_2
 ## HTML 화면 보여주기

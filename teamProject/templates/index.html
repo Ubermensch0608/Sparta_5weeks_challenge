@@ -1,26 +1,32 @@
 <!DOCTYPE html>
-
 <html lang="ko">
-
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>BROADBOARD | 당신을 위한 보드게임 추천</title>
-    <meta property="og:title" content="BROAD BOARD | 보드게임 추천"/>
-    <meta property="og:description" content="보드게임 뭐할까?! 간편하게 보드게임을 추천해줍니다."/>
-    <meta property="og:image" content="{{ url_for('static', filename='ogimage.jpg') }}"/>
+
+    <link rel="shortcut icon" href="../static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
+
+    <meta property="og:title" content="BROAD BOARD | 당신을 위한 보드게임 추천"/>
+    <meta property="og:description" content="어떤 보드게임 할까?! 상황에 맞는 보드게임을 추천해줍니다."/>
+    <meta property="og:image" content="{{ url_for('static', filename='ogimage.png') }}"/>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="../static/styles.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/styles.css">
 </head>
-
-<body data-lang="ko">
-<!-- 우측 네비게이션 -->
+<body>
+    <!-- 우측 네비게이션 -->
 <div class="navi">
     <ul id="menu">
         <li data-target="#section-1"><a href="#section-1" class="hide-nav">Main</a><a href="#section-1">
@@ -187,16 +193,86 @@
                 <a href="https://abrasive-engineer-4de.notion.site/3d2b35dd46d940d4b69d40ec078dcbfd" target="_blank"><img src="../static/images/notion-logo.png" alt="" width="20"></a>
             </div>
         </div>
+        <div class="mobile-member">
+            <ul class="slides">
+                <li id="slide1">
+                    <div class="member">
+                        <span class="intro-img"><img src="../static/images/jongwon.png" alt="" width="50px"></span>
+                        <h6>우량아</h6>
+                        <b>팀장, 프론트엔드 개발자</b>
+                        <span>팀 내 하와이안피자 담당</span>
+                        <a href="https://github.com/Ubermensch0608" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                        <a href="https://velog.io/@ubermensch0608" target="_blank"><img src="../static/images/velog-logo.png" alt="" width="20"></a>
+                    </div>
+                </li>
+                <li id="slide2">
+                    <div class="member">
+                        <span class="intro-img"><img src="../static/images/suwan.png" alt="" width="50px"></span>
+                        <h6>Suwan Park</h6>
+                        <b>백엔드 개발자</b>
+                        <span>팀 내 아이돌 담당</span>
+                        <a href="https://github.com/skdoqj" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                        <a href="https://band-clarinet-a5a.notion.site/5-12f0286452084b319b3365f3682bbf98" target="_blank"><img src="../static/images/notion-logo.png" alt="" width="20"></a>
+                    </div>
+                </li>
+                <li id="slide3">
+                    <div class="member">
+                        <span class="intro-img"><img src="../static/images/kyoungho.png" alt="" width="50px"></span>
+                        <h6>jakebaebaek</h6>
+                        <b>백엔드 개발자</b>
+                        <span>팀 내 유머 담당</span>
+                        <a href="https://github.com/jakebaebaek" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                    </div>
+                </li>
+                <li id="slide4">
+                    <div class="member">
+                        <span class="intro-img"><img src="../static/images/kiwon.png" alt="" width="50px"></span>
+                        <h6>Kiwon</h6>
+                        <b>백엔드 개발자</b>
+                        <span>팀 내 반민초쿠키 담당</span>
+                        <a href="https://github.com/KIWONY" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                    </div>
+                </li>
+                <li id="slide5">
+                    <div class="member" id="slide55">
+                        <span class="intro-img"><img src="../static/images/ek.png" alt="" width="50px"></span>
+                        <h6>EK</h6>
+                        <b>프론트엔드 개발자</b>
+                        <span>팀 내 강경민초파 담당</span>
+                        <a href="https://github.com/f1rstf1y9" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                        <a href="https://abrasive-engineer-4de.notion.site/3d2b35dd46d940d4b69d40ec078dcbfd" target="_blank"><img src="../static/images/notion-logo.png" alt="" width="20"></a>
+                    </div>
+                </li>
+              </ul>
+
+              <ul class="thumbnails">
+                <li>
+                  <a href="#slide1"><img src="../static/images/jongwon.png" /></a>
+                </li>
+                <li>
+                  <a href="#slide2"><img src="../static/images/suwan.png" /></a>
+                </li>
+                <li>
+                  <a href="#slide3"><img src="../static/images/kyoungho.png" /></a>
+                </li>
+                <li>
+                  <a href="#slide4"><img src="../static/images/kiwon.png" /></a>
+                </li>
+                <li>
+                  <a href="#slide5"><img src="../static/images/ek.png" /></a>
+                </li>
+              </ul>
+            </div>
+        </div>
     </div>
+</div>
 
     <div class="modal">
         <div class="modal_content"
              title="클릭하면 창이 닫힙니다.">
         </div>
     </div>
-
     <script src="../static/script/jquery-1.12.4.js"></script>
     <script src="../static/script/script.js"></script>
 </body>
-
 </html>

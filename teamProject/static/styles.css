@@ -653,6 +653,7 @@ ul#menu {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr 0.5fr;
 }
+
 .content-left {
     margin: 2em;
     max-width: 100%;
@@ -734,6 +735,12 @@ ul#menu {
     padding: 5px;
     margin-right: 5px;
 }
+
+.interaction-input {
+    margin-top: 30px;
+
+}
+
 .interaction-input__comment {
     width: 90%;
     height: 40px;
@@ -743,6 +750,7 @@ ul#menu {
     background: rgb(255, 220, 220);
     padding-left: 10px;
 }
+
 .interaction-input > button {
     border: none;
     border-radius: 5px;
@@ -758,7 +766,7 @@ ul#menu {
 }
 
 .interaction-comment > li > span {
-       margin-right: 7px;
+    margin-right: 7px;
 }
 
 
@@ -769,6 +777,7 @@ ul#menu {
         border: 1px solid var(--main-green-color);
     }
 }
+
 /* 로그인 버튼 */
 .login {
     text-align: left;
@@ -803,20 +812,24 @@ ul#menu {
 }
 
 /* 로그인 모달 */
-.login__top, .join__top{
+.login__top, .join__top {
     float: right;
 }
+
 .login__form, .join__form {
     width: 100%;
     font-size: 14px;
 }
+
 .login__form > h4, .join__form > h4 {
     margin: 30px;
 }
+
 .login__form > div > label,
 .join__form > div > label {
     display: none;
 }
+
 .login__form > div > input,
 .join__form > div > input {
     border: 1px solid black;
@@ -824,10 +837,12 @@ ul#menu {
     margin: 5px;
     padding: 10px 10px 10px 20px;
 }
+
 .login__hint, .join__hint {
     font-size: 12px;
     color: darksalmon;
 }
+
 .login__form > button,
 .join__form > button {
     margin: 15px 0 30px 0;

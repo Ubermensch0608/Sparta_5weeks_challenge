@@ -363,14 +363,39 @@ $("button.dark-mode-btn").click(function () {
 
 
 let newCommentInfo = {title: '', id: '', comment: ''}
-
 // 모달창 생성 - 종원
 $(document).on('click', ".card", function (event) {
     $(".modal_content").empty();
     let target_path_1 = $(this)[0]
     let target_path_2 = target_path_1.querySelector('.game-title').innerText
     let target_path_3 = target_path_1.querySelector('img').attributes[0].value
+    let temp_comments
+    $.ajax({
+        type: "GET",
+        url: "/comment",
+        data: {},
+        success: function (response) {
+            let comment_data = response['comment_data']
+            for (let i = 0; i < comment_data.length; i++) {
+                let gameComments = comment_data[i]['COMMENT']
+                let gameTitle = comment_data[i]['title']
 
+                if (target_path_2 === gameTitle) {
+                    let temp_comment = gameComments.map((data) => {
+                        return `<li><span>${data.ID}</span><span>${data.comment}</span></li>`
+
+                    })
+                    temp_comments = temp_comment.toString().replaceAll(",", "")
+
+                    console.log($('.interaction-comment'))
+                }
+
+
+
+            }
+
+        }
+    })
     $.ajax({
             type: "GET",
             url: "/search",
@@ -386,9 +411,9 @@ $(document).on('click', ".card", function (event) {
                     let rb_title = games[i]['title']
                     let rb_when = games[i]['when']
                     let rb_yt_link = games[i]['youtube_link']
-                    let rb_yt_title = games[i]['youtube_title']
+                    let rb_level = games[i]['level']
                     let KEY = rb_title.trim()
-                    // let KEY = rb_title.replace(/\s/gi, "")
+
                     if (target_path_2 === rb_title) {
                         newCommentInfo.title = rb_title
                         newCommentInfo.id = login_info.id
@@ -414,7 +439,7 @@ $(document).on('click', ".card", function (event) {
               </div>
                <div class="info-content">
                 <span class="content-rule">
-                  <b>난이도</b> Normal
+                  <b>난이도</b> ${rb_level}
                 </span>
                 <span class="content-rule">
                   <b>인원</b> ${rb_person}
@@ -439,10 +464,8 @@ $(document).on('click', ".card", function (event) {
             <div class="content-interaction">
                 <div class="interaction-button"><button class="recommend-btn" id=${KEY}>추천</button><button>댓글</button></div>
                 <div>추천: <b class="recommend-number">0</b>개</div>
-                <ul class="interaction-comment" id=${KEY}>
-                   <li>
-                     <span>우량아</span><span>이 게임은 정말 전설입니다...</span>
-                   </li>
+                <ul class="interaction-comment" id="${KEY}">
+                     ${temp_comments}
                 </ul>
                 <div class="interaction-input"><input class="interaction-input__comment" type="text" placeholder="댓글 달기..." /><button type="submit">게시</button></div>
             </div>      
@@ -457,39 +480,44 @@ $(document).on('click', ".card", function (event) {
                 }
 
                 $(".content-bottom").submit(function (event) {
-                    event.preventDefault()
-                    const newComment = event.target[2]
-                    newCommentInfo.comment = newComment.value
-                    console.log(newCommentInfo.title, newCommentInfo.id, newCommentInfo.comment)
-                    $.ajax({
-                        type: "POST",
-                        url: "/comment",
-                        data: {
-                            game_title_give: newCommentInfo.title,
-                            ID_give: newCommentInfo.id,
-                            comment_give: newCommentInfo.comment,
-                        },
-                        success: function (response) {
-                            console.log(response)
-                            console.log('posted')
+                        event.preventDefault()
+                        const newComment = event.target[2]
+                        newCommentInfo.comment = newComment.value
+                        console.log(newCommentInfo.title, newCommentInfo.id, newCommentInfo.comment)
+                        if (newCommentInfo.id === null) {
+                            alert('로그인을 먼저 해주세요')
+                            return
                         }
-                    })
 
+                        $.ajax({
+                            type: "POST",
+                            url: "/comment",
+                            data: {
+                                game_title_give: newCommentInfo.title,
+                                ID_give: newCommentInfo.id,
+                                comment_give: newCommentInfo.comment,
+                            },
+                            success: function (response) {
+                            }
+                        })
 
-                    if (target_path_2 === newCommentInfo.title) {
-                        let temp_html = `<li><span>${login_info.id}</span><span>${newComment.value}</span></li>`
+                        if (target_path_2 === newCommentInfo.title) {
+                            let temp_html = `<li><span>${login_info.id}</span><span>${newComment.value}</span></li>`
 
-                        if (newComment.value.trim().length > 0) {
-                            $(".interaction-comment").append(temp_html)
+                            if (newComment.value.trim().length > 0) {
+                                $(".interaction-comment").append(temp_html)
+                            }
+                            newComment.value = ""
                         }
-                        newComment.value = ""
+
                     }
-                })
+                )
 
             }
         }
     )
     $('.modal').fadeIn()
+
 })
 $(document).on('click', ".content-top__close", function (event) {
     $('.modal').fadeOut()
@@ -501,7 +529,6 @@ let isRecommended = false
 $(document).on('click', '.recommend-btn', function (event) {
     // if (event.target.id === $('.content-top__title')[0].innerText.trim()) {
     let currentRecommend = parseInt($('.recommend-number')[0].innerText, 10)
-
 
     if (isRecommended === false) {
         isRecommended = true
@@ -688,12 +715,3 @@ function isLoginValid() {
         })
     }
 }
-
- $.ajax({
-        type: "GET",
-        url: "/comment",
-        data: {},
-        success: function (response) {
-            console.log(response)
-        }
-    })

@@ -373,15 +373,18 @@ $(document).on('click', ".card", function (event) {
             for (let i = 0; i < comment_data.length; i++) {
                 let gameComments = comment_data[i]['COMMENT']
                 let gameTitle = comment_data[i]['title']
-
                 if (target_path_2 === gameTitle) {
                     let temp_comment = gameComments.map((data) => {
-                        return `<li><span>${data.ID}</span><span>${data.comment}</span></li>`
-
-                    })
+                            return `<li><span>${data.ID}</span><span>${data.comment}</span></li>`
+                        }
+                    )
                     temp_comments = temp_comment.toString().replaceAll(",", "")
                 }
+
+
             }
+
+
         }
     })
 
@@ -457,14 +460,14 @@ $(document).on('click', ".card", function (event) {
                                                   </div>
                                                 </div>
                                               </div>
-                                              <form class="content-bottom" id=${KEY}>
+                                              <form class="content-bottom" id=${KEY} >
                                                 <div class="content-interaction">
                                                     <div class="interaction-button">
                                                     <button type="button" class="recommend-btn" id=${KEY}>
                                                         ${like_svg}
                                                         <b class="recommend-number">${likes_num}</b>
                                                     </button>
-                                                    <button>댓글</button>
+                                                    <button type="button">댓글</button>
                                                     </div>
                                                     <ul class="interaction-comment" id="${KEY}">
                                                          ${temp_comments}
@@ -476,44 +479,48 @@ $(document).on('click', ".card", function (event) {
                                         
                                         `;
                         $(".modal_content").append(temp_html);
+
+
+                        $(".content-bottom").submit(function (event) {
+                                event.preventDefault()
+                                const newComment = event.target[2]
+                                newCommentInfo.comment = newComment.value
+                                console.log(newCommentInfo.title, newCommentInfo.id, newCommentInfo.comment)
+                                if (newCommentInfo.id === null) {
+                                    alert('로그인을 먼저 해주세요')
+                                    return
+                                }
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/comment",
+                                    data: {
+                                        game_title_give: newCommentInfo.title,
+                                        ID_give: newCommentInfo.id,
+                                        comment_give: newCommentInfo.comment,
+                                    },
+                                    success: function (response) {
+                                    }
+                                })
+
+                                if (target_path_2 === newCommentInfo.title) {
+                                    let temp_html = `<li><span>${login_info.id}</span><span>${newComment.value}</span></li>`
+
+                                    if (newComment.value.trim().length > 0) {
+                                        $(".interaction-comment").append(temp_html)
+                                    }
+                                    newComment.value = ""
+                                }
+                            }
+                        )
+
+
                     } else if (target_path_3 == 'undefined') {
                         $('.modal').fadeOut()
                     }
+
                 }
 
-                $(".content-bottom").submit(function (event) {
-                        event.preventDefault()
-                        const newComment = event.target[2]
-                        newCommentInfo.comment = newComment.value
-                        console.log(newCommentInfo.title, newCommentInfo.id, newCommentInfo.comment)
-                        if (newCommentInfo.id === null) {
-                            alert('로그인을 먼저 해주세요')
-                            return
-                        }
-
-                        $.ajax({
-                            type: "POST",
-                            url: "/comment",
-                            data: {
-                                game_title_give: newCommentInfo.title,
-                                ID_give: newCommentInfo.id,
-                                comment_give: newCommentInfo.comment,
-                            },
-                            success: function (response) {
-                            }
-                        })
-
-                        if (target_path_2 === newCommentInfo.title) {
-                            let temp_html = `<li><span>${login_info.id}</span><span>${newComment.value}</span></li>`
-
-                            if (newComment.value.trim().length > 0) {
-                                $(".interaction-comment").append(temp_html)
-                            }
-                            newComment.value = ""
-                        }
-
-                    }
-                )
 
             }
         }
@@ -803,7 +810,7 @@ if (storedInfo === login_info.id) {
         $(".login__btn").css("background-color", "seagreen");
         $(".login__btn").text('logout');
         $("#main-body > div.recommend-box > h2").text(login_info["id"] + "님! 지금, 이 보드게임 어때요?");
-
+        console.log($('#cmtDelete'))
     } else {
 
     }

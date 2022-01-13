@@ -725,6 +725,12 @@ ul#menu {
     text-align: left;
     margin-left: 10%;
     grid-column: -3/-1;
+
+}
+
+.content-interaction {
+    display: grid;
+    grid-template-rows: repeat(3, min-content);
 }
 
 .interaction-button > button {
@@ -737,8 +743,7 @@ ul#menu {
 }
 
 .interaction-input {
-    margin-top: 30px;
-
+    width: 90%;
 }
 
 .interaction-input__comment {
@@ -758,6 +763,11 @@ ul#menu {
     color: white;
     padding: 5px;
     margin-left: 5px;
+}
+
+.interaction-comment {
+    overflow: scroll;
+    height: 100px;
 }
 
 .interaction-comment > li {

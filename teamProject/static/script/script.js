@@ -2,16 +2,13 @@
 $(".text-search-btn").click(function () {
     $(".text-result-section").show();
 });
-
 // 우측 네비게이션 리모콘 가이드 함수 - 은경
 $("#menu > li > a:nth-child(2)").mouseenter(function () {
     $(this).siblings().removeClass('hide-nav');
-
 });
 $("#menu > li a:nth-child(2)").mouseleave(function () {
     $(this).siblings().addClass('hide-nav');
 });
-
 // 키워드 페이지 버튼 함수 - 종원
 $("#number .select-btn").click(function () {
     $("#number .select-btn").not(this).removeClass("btn-clicked");
@@ -25,7 +22,6 @@ $("#genre .select-btn").click(function () {
     $("#genre .select-btn").not(this).removeClass("btn-clicked");
     $(this).toggleClass("btn-clicked");
 });
-
 // 키워드 검색용 배열 - 은경
 var keywords = [
     2, 3, 4, 5, 6, 7,
@@ -45,6 +41,7 @@ function range(start, end) {
 let cards_arr = [];
 
 // 키워드 검색 버튼 함수 - 은경 / 종원
+
 function gameKeywordFinder() {
     cards_arr = [];
     const clicked_keys = [];
@@ -65,10 +62,10 @@ function gameKeywordFinder() {
                 let end = Number(num_person.charAt(num_person.length - 1));
                 let person_arr = range(start, end);
                 let play_time = games[i]['play_time'];
-                let img = games[i]['img'];
                 let category = games[i]['category'];
                 let when = games[i]['when'];
-                let rb_img = games[i]['S3_img']
+                let rb_img = games[i]['S3_img'];
+                let likes = games[i]['RECOMMEND'].length;
                 let temp_html = ``;
                 let j, cnt = 0;
                 for (j = 0; j < clicked_keys.length; j++) {
@@ -80,12 +77,16 @@ function gameKeywordFinder() {
                             }
                         }
                     } else if (key <= 10) {
-                        if (keywords[key - 1] === when) {
-                            cnt++;
+                        for (let n = 0; n < when.length; n++) {
+                            if (keywords[key - 1] === when[n]) {
+                                cnt++;
+                            }
                         }
                     } else {
-                        if (keywords[key - 1] === category) {
-                            cnt++;
+                        for (let n = 0; n < category.length; n++) {
+                            if (keywords[key - 1] === category[n][n + 1]) {
+                                cnt++;
+                            }
                         }
                     }
                 }
@@ -103,7 +104,7 @@ function gameKeywordFinder() {
                                 </div>`;
                     $("#cardHolder2").append(temp_html);
                     let temp_arr = {
-                        key: j, title: title, play_time: play_time.slice(0, -1), t_html: temp_html
+                        key: j, title: title, play_time: play_time.slice(0, -1), likes: likes, t_html: temp_html
                     }
                     cards_arr.push(temp_arr);
                 }
@@ -139,7 +140,6 @@ $('#title_arr').click(function () { //제목 ㄱㄴㄷ순 정렬
     result = cards_arr.sort(function (a, b) {
         return a.title < b.title ? -1 : a.title > b.title ? 1 : 0
     });
-
     for (let i = 0; i < result.length; i++) {
         $("#cardHolder2").append(result[i].t_html);
     }
@@ -150,7 +150,16 @@ $('#time_arr').click(function () { //플탐순 정렬
     result = cards_arr.sort(function (a, b) {
         return a.play_time - b.play_time //작은 순 정렬
     });
-
+    for (let i = 0; i < result.length; i++) {
+        $("#cardHolder2").append(result[i].t_html);
+    }
+});
+$('#like_arr').click(function () { //추천순 정렬
+    $("#cardHolder2").empty();
+    var result;
+    result = cards_arr.sort(function (a, b) {
+        return b.likes - a.likes
+    });
     for (let i = 0; i < result.length; i++) {
         $("#cardHolder2").append(result[i].t_html);
     }
@@ -162,7 +171,6 @@ function btn_next() {
     $('#cardHolder2').css('display', 'grid')
     var k_str = "";
     active_elements = document.getElementsByClassName('btn-clicked');
-
     k_str = "";
     for (var i = 0; i < active_elements.length; i++) {
         if (k_str == "")
@@ -170,7 +178,6 @@ function btn_next() {
         else
             k_str = k_str + "," + active_elements[i].innerHTML;
     }
-
     if (k_str == "") {
         alert('1개 이상의 키워드를 선택해 주세요!')
     } else {
@@ -183,7 +190,6 @@ function gameTextFinder() {
     $('#autoMaker').hide();
     let newValue = document.querySelector(".search-input").value;
     let value_cnt = 0;
-
     $("#cardHolder1").empty();
     $.ajax({
         type: "GET",
@@ -225,7 +231,6 @@ function gameTextFinder() {
 
 // 자동완성 배열 만들기 - 은경
 var ref = [];
-
 $.ajax({
     type: "GET",
     url: "/search",
@@ -238,7 +243,6 @@ $.ajax({
         }
     },
 });
-
 // 자동완성 함수 - 은경
 var isComplete = false;  //autoMaker 자식이 선택 되었는지 여부
 $('.search-input').keyup(function () {
@@ -254,26 +258,22 @@ $('.search-input').keyup(function () {
                 $("#autoMaker").show();
             }
         });
-        $('#autoMaker').children().each(function () {
-            $(this).click(function () {
-                $('.search-input').val($(this).text());
-                $('#insert_target').val("key : " + $(this).attr('key') + ", data : " + $(this).text());
-                isComplete = true;
-            });
-        });
     } else {
         $('#autoMaker').children().remove();
         $("#autoMaker").hide();
     }
 });
+$(document).on('click', '.hint', function () {
+    $('.search-input').val($(this).text());
+    $('#insert_target').val("key : " + $(this).attr('key') + ", data : " + $(this).text());
+    isComplete = true;
+})
 $('.search-input').keydown(function (event) {
     if (isComplete) {  //autoMaker 자식이 선택 되었으면 초기화
         $('#insert_target').val('')
         $("#autoMaker").hide();
     }
 })
-
-
 // 메인페이지 랜덤 추천 - 은경
 const selectIndex = (totalIndex, selectingNumber) => {
     let randomIndexArray = []
@@ -321,8 +321,6 @@ window.onload = function () {
         }
     },)
 }
-
-
 // dark mode - 종원
 let isBright = true;
 const darkModeBtn = document.querySelector(".dark-mode-btn");
@@ -341,7 +339,6 @@ $("button.dark-mode-btn").click(function () {
         $('.member').css("color", "#000");
         $('#section-4').css("background-color", "seagreen");
         $('#autoMaker').css("color", "#000");
-
     } else {
         isBright = true;
         darkModeBtn.innerHTML = "dark";
@@ -357,6 +354,7 @@ $("button.dark-mode-btn").click(function () {
 
 
 let newCommentInfo = {title: '', id: '', comment: ''}
+let isRecommend;
 // 모달창 생성 - 종원
 $(document).on('click', ".card", function (event) {
     $(".modal_content").empty();
@@ -374,20 +372,15 @@ $(document).on('click', ".card", function (event) {
                 let gameComments = comment_data[i]['COMMENT']
                 let gameTitle = comment_data[i]['title']
                 if (target_path_2 === gameTitle) {
-                    let temp_comment = gameComments.map((data) => {
+                    let temp_comment = gameComments.slice(0).reverse().map((data) => {
                             return `<li><span>${data.ID}</span><span>${data.comment}</span></li>`
                         }
                     )
                     temp_comments = temp_comment.toString().replaceAll(",", "")
                 }
-
-
             }
-
-
         }
     })
-
     $.ajax({
             type: "GET",
             url: "/search",
@@ -405,23 +398,28 @@ $(document).on('click', ".card", function (event) {
                     let rb_yt_link = games[i]['youtube_link']
                     let rb_level = games[i]['level']
                     let KEY = rb_title.replace(" ", "")
-                    let likes_num = games[i]['recommend'].length
-                    let like = games[i]['recommend']
+                    let likes_num = games[i]['RECOMMEND'].length
+                    let like = games[i]['RECOMMEND']
                     let n;
                     let like_svg = `<svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 24 24"><path d="M12 9.229c.234-1.12 1.547-6.229 5.382-6.229 2.22 0 4.618 1.551 4.618 5.003 0 3.907-3.627 8.47-10 12.629-6.373-4.159-10-8.722-10-12.629 0-3.484 2.369-5.005 4.577-5.005 3.923 0 5.145 5.126 5.423 6.231zm-12-1.226c0 4.068 3.06 9.481 12 14.997 8.94-5.516 12-10.929 12-14.997 0-7.962-9.648-9.028-12-3.737-2.338-5.262-12-4.27-12 3.737z"/></svg>`;
                     for (n = 0; n < like.length; n++) {
                         if (like[n] == login_info.id) {
                             like_svg = `<svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 24 24"><path d="M12 4.435c-1.989-5.399-12-4.597-12 3.568 0 4.068 3.06 9.481 12 14.997 8.94-5.516 12-10.929 12-14.997 0-8.118-10-8.999-12-3.568z"/></svg>`
+                            isRecommend = 'true'
                         }
+                    }
+                    if (n == like.length) {
+                        isRecommend = 'false'
                     }
                     if (target_path_2 === rb_title) {
                         newCommentInfo.title = rb_title
                         newCommentInfo.id = login_info.id
-
                         let desc_1 = rb_desc.substr(0, 26)
                         let desc_2 = rb_desc.substr(26)
-
-
+                          if (temp_comments === undefined) {
+                              event.target.click()
+                              return
+                        }
                         let temp_html = `
     
                                           <div class="content-inner" >
@@ -456,7 +454,7 @@ $(document).on('click', ".card", function (event) {
                                                   </div>
                                                   <div class="info-content">
                                                     <b>게임 소개 영상</b>
-                                                    <a href="${rb_yt_link}" target="_blank" class="content_url"><svg xmlns="http://www.w3.org/2000/svg" fill="tomato" width="24" height="24" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
+                                                    <a href="${rb_yt_link}" target="_blank" class="content_url"><svg xmlns="http://www.w3.org/2000/svg" fill="tomato" width="28" height="28" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
                                                   </div>
                                                 </div>
                                               </div>
@@ -478,8 +476,8 @@ $(document).on('click', ".card", function (event) {
                                           </div>
                                         
                                         `;
-                        $(".modal_content").append(temp_html);
 
+                        $(".modal_content").append(temp_html);
 
                         $(".content-bottom").submit(function (event) {
                                 event.preventDefault()
@@ -488,9 +486,9 @@ $(document).on('click', ".card", function (event) {
                                 console.log(newCommentInfo.title, newCommentInfo.id, newCommentInfo.comment)
                                 if (newCommentInfo.id === null) {
                                     alert('로그인을 먼저 해주세요')
+                                    $('.login__btn').click()
                                     return
                                 }
-
                                 $.ajax({
                                     type: "POST",
                                     url: "/comment",
@@ -502,26 +500,19 @@ $(document).on('click', ".card", function (event) {
                                     success: function (response) {
                                     }
                                 })
-
                                 if (target_path_2 === newCommentInfo.title) {
                                     let temp_html = `<li><span>${login_info.id}</span><span>${newComment.value}</span></li>`
-
                                     if (newComment.value.trim().length > 0) {
-                                        $(".interaction-comment").append(temp_html)
+                                        $(".interaction-comment").prepend(temp_html)
                                     }
                                     newComment.value = ""
                                 }
                             }
                         )
-
-
                     } else if (target_path_3 == 'undefined') {
                         $('.modal').fadeOut()
                     }
-
                 }
-
-
             }
         }
     )
@@ -533,13 +524,13 @@ $(document).on('click', ".content-top__close", function (event) {
 
 
 //좋아요 함수
-let isRecommend = 'false';
 $(document).on('click', '.recommend-btn', function (event) {
     let target_game = $(this).attr('id')
     let cur_likes = document.querySelector("b.recommend-number").innerText
+
     if (login_info.id == null) {
         alert('로그인을 먼저 해주세요')
-        makeLogin()
+        $('.login__btn').click()
     } else {
         $.ajax({
             type: "GET",
@@ -549,8 +540,8 @@ $(document).on('click', '.recommend-btn', function (event) {
                 let games = response['all_games'];
                 for (let i = 0; i < games.length; i++) {
                     if (target_game == games[i]['title'].replace(" ", "")) {
-                        let like = games[i]['recommend']
                         let title = games[i]['title']
+                        let like = games[i]['RECOMMEND']
                         let n;
                         for (n = 0; n < like.length; n++) {
                             if (like[n] == login_info.id) {
@@ -564,14 +555,20 @@ $(document).on('click', '.recommend-btn', function (event) {
                                     }
                                 })
                                 cur_likes = parseInt(cur_likes) - 1;
+                                for (let j = 0; j < cards_arr.length; j++) {
+                                    if (cards_arr[j]['title'] == title) {
+                                        cards_arr[j]['likes'] = cur_likes
+                                    }
+                                }
+
                                 document.querySelector("button.recommend-btn").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 24 24"><path d="M12 9.229c.234-1.12 1.547-6.229 5.382-6.229 2.22 0 4.618 1.551 4.618 5.003 0 3.907-3.627 8.47-10 12.629-6.373-4.159-10-8.722-10-12.629 0-3.484 2.369-5.005 4.577-5.005 3.923 0 5.145 5.126 5.423 6.231zm-12-1.226c0 4.068 3.06 9.481 12 14.997 8.94-5.516 12-10.929 12-14.997 0-7.962-9.648-9.028-12-3.737-2.338-5.262-12-4.27-12 3.737z"/></svg>
                                                                                                         <b class="recommend-number">${cur_likes}</b>`
                                 isRecommend = 'false'
                                 return;
-
                             }
                         }
                         if (n == like.length) {
+                            isRecommend = 'false'
                             $.ajax({
                                 type: "POST",
                                 url: "/like",
@@ -581,6 +578,12 @@ $(document).on('click', '.recommend-btn', function (event) {
                                 }
                             })
                             cur_likes = parseInt(cur_likes) + 1;
+                            for (let j = 0; j < cards_arr.length; j++) {
+                                if (cards_arr[j]['title'] == title) {
+                                    cards_arr[j]['likes'] = cur_likes
+                                }
+                            }
+
                             document.querySelector("button.recommend-btn").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 24 24"><path d="M12 4.435c-1.989-5.399-12-4.597-12 3.568 0 4.068 3.06 9.481 12 14.997 8.94-5.516 12-10.929 12-14.997 0-8.118-10-8.999-12-3.568z"/></svg>
                                                                                                  <b class="recommend-number">${cur_likes}</b>`
                             isRecommend = 'true'
@@ -592,8 +595,6 @@ $(document).on('click', '.recommend-btn', function (event) {
         })
     }
 })
-
-
 $("button.dark-mode-btn").click(function () {
     $.ajax({
         type: "POST",
@@ -604,26 +605,6 @@ $("button.dark-mode-btn").click(function () {
         }
     })
 })
-
-let isRecommended = false
-
-$(document).on('click', '.recommend-btn', function (event) {
-    // if (event.target.id === $('.content-top__title')[0].innerText.trim()) {
-    let currentRecommend = parseInt($('.recommend-number')[0].innerText, 10)
-
-    if (isRecommended === false) {
-        isRecommended = true
-        currentRecommend = currentRecommend + 1
-    } else if (isRecommended === true) {
-        isRecommended = false
-        currentRecommend = currentRecommend - 1
-    }
-    $('.recommend-number')[0].innerText = currentRecommend
-    // }
-
-})
-
-
 $("button.dark-mode-btn").click(function () {
     $.ajax({
         type: "POST",
@@ -634,7 +615,6 @@ $("button.dark-mode-btn").click(function () {
         }
     })
 })
-
 // 메인페이지 로그인 버튼 기능
 let login_info = {isLogin: false, id: null}
 
@@ -679,7 +659,6 @@ function makeLogin() {
 $(document).on('click', ".longin__func", function (event) {
     isLogin();
 });
-
 $(document).on('click', ".join", function (event) {
     $(".modal_content").empty();
     let temp_html = `<div class="join__top">
@@ -702,8 +681,6 @@ $(document).on('click', ".join", function (event) {
                     </div>`
     $(".modal_content").append(temp_html);
 })
-
-
 // 회원가입 기능
 let member_list = [
     {id: 'id', pwd: 'password'}
@@ -738,10 +715,8 @@ function isJoinValid() {
                     }
                 }
             })
-
         }
     }
-
 }
 
 function makeMember() {
@@ -801,20 +776,13 @@ function isLoginValid() {
 
 const storedInfo = localStorage.getItem('isLogin')
 login_info.id = storedInfo
-
 if (storedInfo === login_info.id) {
     login_info.id = storedInfo
     if (login_info.id !== null) {
         login_info.isLogin = true
-        console.log(login_info)
         $(".login__btn").css("background-color", "seagreen");
         $(".login__btn").text('logout');
         $("#main-body > div.recommend-box > h2").text(login_info["id"] + "님! 지금, 이 보드게임 어때요?");
-        console.log($('#cmtDelete'))
     } else {
-
     }
-
 }
-
-

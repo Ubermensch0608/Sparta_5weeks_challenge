@@ -14,7 +14,7 @@
 }
 
 * {
-    font-family: "GmarketSansMedium";
+    font-family: "GmarketSansMedium", sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -258,19 +258,14 @@ a {
 
 .select-btn {
     display: inline-block;
-    border: 1px solid #000;
+    border: 1px solid #3f3f3f;
     border-radius: 8px;
     padding: 10px 20px;
     margin: 4px 2px;
     transition: 0.5s;
-    background-color: seashell;
+    background-color: #fff7f2;
 }
 
-/*.btn-section a:hover {*/
-/*  background-color: var(--main-green-color);*/
-/*  color: #fff !important;*/
-/*  border: 1px solid var(--main-green-color);*/
-/*}*/
 .select-search-btn {
     display: block;
     width: 90%;
@@ -298,7 +293,6 @@ a {
     display: none;
     position: absolute;
     top: 40px;
-
     z-index: 5;
     width: 80%;
     margin-left: 30px;
@@ -319,7 +313,6 @@ a {
 
 /* 키워드 검색 결과 페이지 */
 #cardHolder2 {
-    display: none;
     margin: auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -381,15 +374,17 @@ a {
     /*border: 1px solid none;*/
     border-radius: 30px !important;
     margin-bottom: 20px;
-    padding: 8px;
+    padding: 9px;
     text-align: left;
     display: inline-block;
 }
 
 .section-array button {
+    background: white;
     border: none;
     border-radius: 15px;
     padding: 5px 9px;
+    margin-left: 10px;
 }
 
 /* 검색 결과 카드 섹션 */
@@ -646,7 +641,6 @@ ul#menu {
 }
 
 /* 추가 정보 생성창 */
-
 .content-inner {
     max-width: 100%;
     display: grid;
@@ -714,6 +708,7 @@ ul#menu {
 .content_url svg {
     margin-left: 5px;
     padding-bottom: 2px;
+
 }
 
 .slides {
@@ -725,7 +720,6 @@ ul#menu {
     text-align: left;
     margin-left: 10%;
     grid-column: -3/-1;
-
 }
 
 .content-interaction {
@@ -752,9 +746,10 @@ ul#menu {
     outline: none;
     border: none;
     border-radius: 5px;
-    background: rgb(255, 220, 220);
+    background: rgb(255, 235, 233);
     padding-left: 10px;
 }
+
 
 .interaction-input > button {
     border: none;
@@ -778,7 +773,6 @@ ul#menu {
 .interaction-comment > li > span {
     margin-right: 7px;
 }
-
 
 @media (min-width: 427px) {
     .btn-section a:hover {
